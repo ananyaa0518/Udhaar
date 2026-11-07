@@ -1,0 +1,181 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Udhaar Voice - Mic Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 650px;
+            margin: 60px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+        }
+
+        button {
+            padding: 12px 20px;
+            margin: 8px 5px 8px 0;
+            cursor: pointer;
+            border: none;
+            border-radius: 8px;
+            background: #2563eb;
+            color: white;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        #status {
+            margin: 20px 0;
+            color: #2563eb;
+        }
+
+        pre {
+            white-space: pre-wrap;
+            background: #f1f1f1;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        audio {
+            width: 100%;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <h2>🎙️ Udhaar Voice</h2>
+    <p>Test Hindi voice recording with Gnani Prisma STT.</p>
+
+    <button id="start">Start Recording</button>
+    <button id="stop" disabled>Stop Recording</button>
+
+    <p id="status">Ready to record.</p>
+
+    <h3>Audio Playback</h3>
+    <audio id="player" controls></audio>
+
+    <h3>Transcript</h3>
+    <pre id="result">Your transcript will appear here.</pre>
+
+</div>
+
+<script>
+    let recorder;
+    let chunks = [];
+    let stream;
+
+    const startBtn = document.getElementById("start");
+    const stopBtn = document.getElementById("stop");
+    const status = document.getElementById("status");
+    const result = document.getElementById("result");
+    const player = document.getElementById("player");
+
+    startBtn.onclick = async () => {
+        try {
+            stream = await navigator.mediaDevices.getUserMedia({
+                audio: true
+            });
+
+            const mimeType = MediaRecorder.isTypeSupported(
+                "audio/webm;codecs=opus"
+            ) ? "audio/webm;codecs=opus" : "";
+
+            recorder = new MediaRecorder(
+                stream,
+                mimeType ? { mimeType } : {}
+            );
+
+            chunks = [];
+
+            recorder.ondataavailable = event => {
+                if (event.data.size > 0) {
+                    chunks.push(event.data);
+                }
+            };
+
+            recorder.onstop = async () => {
+                const blob = new Blob(chunks, {
+                    type: recorder.mimeType
+                });
+
+                player.src = URL.createObjectURL(blob);
+
+                const extension = blob.type.includes("mp4")
+                    ? "mp4"
+                    : "webm";
+
+                const formData = new FormData();
+
+                formData.append(
+                    "audio",
+                    blob,
+                    `recording.${extension}`
+                );
+
+                status.textContent = "Sending recording to Prisma...";
+                result.textContent = "Transcribing...";
+
+                try {
+                    const response = await fetch(
+                        "http://127.0.0.1:8000/transcribe",
+                        {
+                            method: "POST",
+                            body: formData
+                        }
+                    );
+
+                    const data = await response.json();
+
+                    result.textContent = JSON.stringify(
+                        data, null, 2
+                    );
+
+                    status.textContent = response.ok
+                        ? "Transcription successful!"
+                        : "Transcription failed!";
+
+                } catch (error) {
+                    status.textContent = "Request failed: " + error.message;
+                }
+
+                stream.getTracks().forEach(track => track.stop());
+            };
+
+            recorder.start();
+
+            status.textContent = "🔴 Recording... Speak in Hindi.";
+            startBtn.disabled = true;
+            stopBtn.disabled = false;
+
+        } catch (error) {
+            status.textContent = "Microphone error: " + error.message;
+        }
+    };
+
+    stopBtn.onclick = () => {
+        if (recorder && recorder.state === "recording") {
+            recorder.stop();
+            status.textContent = "Processing recording...";
+        }
+
+        startBtn.disabled = false;
+        stopBtn.disabled = true;
+    };
+</script>
+
+</body>
+</html>
