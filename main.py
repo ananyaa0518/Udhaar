@@ -12,7 +12,7 @@ from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
-
+from routes.customers import router as customers_router
 from number_utils import HINDI_NUMBERS, ROMAN_NUMBERS, hindi_to_number
 
 
@@ -40,7 +40,7 @@ AUDIO_DIR.mkdir(exist_ok=True)
 # ==================================================
 
 app = FastAPI(title="Udhaar Voice API")
-
+app.include_router(customers_router)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
