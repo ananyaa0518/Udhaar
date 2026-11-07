@@ -1,424 +1,415 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Udhaar Voice</title>
+  <title>Udhaar Voice — Recorder</title>
   <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --ink: #172033;
+      --muted: #667085;
+      --line: #e5e9f2;
+      --primary: #3157d5;
+      --primary-dark: #2444b2;
+      --green: #16845b;
+      --red: #c0392b;
+      --soft-blue: #eef2ff;
+      --radius: 18px;
+    }
     * { box-sizing: border-box; }
-
     body {
       margin: 0;
-      font-family: Inter, system-ui, sans-serif;
-      background: #f5f5f4;
-      color: #1c1917;
-      min-height: 100vh;
-      padding: 32px 16px;
+      padding: 32px 16px 56px;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
-
-    .container {
-      max-width: 620px;
-      margin: auto;
+    .page { max-width: 760px; margin: 0 auto; }
+    header { margin-bottom: 24px; }
+    .eyebrow {
+      color: var(--primary); font-size: 12px; font-weight: 800;
+      letter-spacing: .12em; text-transform: uppercase;
     }
-
-    header { margin-bottom: 28px; }
-    header h1 { margin: 0; font-size: 30px; }
-    header p { color: #78716c; margin-top: 8px; }
-
+    h1 { margin: 8px 0 6px; font-size: clamp(28px, 5vw, 38px); letter-spacing: -.04em; }
+    .subtitle { color: var(--muted); margin: 0; line-height: 1.55; }
     .card {
-      background: white;
-      border: 1px solid #e7e5e4;
-      border-radius: 16px;
-      padding: 22px;
-      margin-bottom: 18px;
+      background: var(--card); border: 1px solid var(--line);
+      border-radius: var(--radius); padding: 22px; margin: 16px 0;
+      box-shadow: 0 8px 28px rgba(20, 35, 75, .045);
     }
-
-    h2 { font-size: 18px; margin: 0 0 16px; }
-
+    .step { display: flex; align-items: center; gap: 10px; margin: 0 0 16px; }
+    .step-number {
+      width: 28px; height: 28px; border-radius: 9px; display: grid;
+      place-items: center; background: var(--soft-blue); color: var(--primary);
+      font-weight: 800; font-size: 13px;
+    }
+    h2 { margin: 0; font-size: 18px; }
+    .hint { color: var(--muted); font-size: 13px; line-height: 1.5; margin: 8px 0 0; }
+    .controls { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
     button {
-      border: 0;
-      border-radius: 10px;
-      padding: 13px 18px;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      background: #292524;
-      color: white;
+      border: 0; border-radius: 11px; padding: 12px 17px; font-size: 14px;
+      font-weight: 700; cursor: pointer; transition: .15s ease;
     }
-
-    button:disabled {
-      opacity: .45;
-      cursor: not-allowed;
-    }
-
-    button.secondary {
-      background: #e7e5e4;
-      color: #292524;
-    }
-
-    button.danger { background: #b91c1c; }
-
-    .actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
+    button:disabled { opacity: .45; cursor: not-allowed; }
+    .primary { background: var(--primary); color: white; }
+    .primary:hover:not(:disabled) { background: var(--primary-dark); }
+    .secondary { background: #edf0f6; color: var(--ink); }
+    .danger { background: #fff0ee; color: var(--red); }
     .status {
-      color: #78716c;
-      font-size: 14px;
-      margin-top: 14px;
-      min-height: 20px;
+      margin-top: 14px; padding: 11px 13px; border-radius: 10px;
+      background: #f2f4f8; color: var(--muted); font-size: 13px; line-height: 1.5;
     }
-
-    .transcript {
-      background: #f5f5f4;
-      padding: 14px;
-      border-radius: 10px;
-      line-height: 1.7;
-      min-height: 48px;
-      white-space: pre-wrap;
+    .status.success { background: #eaf8f1; color: #126b49; }
+    .status.error { background: #fff0ee; color: #a52e24; }
+    .status.live { background: #fff5e8; color: #94520a; }
+    .audio-preview { width: 100%; margin-top: 14px; }
+    label { display: block; font-size: 13px; font-weight: 700; margin: 14px 0 7px; }
+    input, select, textarea {
+      width: 100%; border: 1px solid #d8deea; border-radius: 10px;
+      padding: 12px 13px; font: inherit; color: var(--ink); background: white;
+      outline: none;
     }
-
-    label {
-      display: block;
-      font-size: 14px;
-      font-weight: 600;
-      margin: 14px 0 6px;
+    input:focus, select:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(49,87,213,.10); }
+    textarea { min-height: 88px; resize: vertical; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 14px; }
+    .full { grid-column: 1 / -1; }
+    .field-note { color: var(--muted); font-size: 12px; margin-top: 5px; }
+    .result {
+      padding: 14px; border: 1px solid var(--line); border-radius: 12px;
+      background: #fbfcff; margin-top: 14px;
     }
-
-    input {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #d6d3d1;
-      border-radius: 9px;
-      font-size: 16px;
-    }
-
-    .field-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-    }
-
+    .result strong { display: block; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
     .hidden { display: none; }
-
-    .success { color: #15803d; }
-    .error { color: #b91c1c; }
-
-    audio { width: 100%; margin-top: 14px; }
-
-    @media (max-width: 480px) {
-      .field-grid { grid-template-columns: 1fr; }
-      body { padding: 20px 12px; }
+    .footer { text-align: center; color: var(--muted); font-size: 12px; margin-top: 22px; }
+    @media (max-width: 560px) {
+      body { padding: 22px 12px 40px; }
+      .card { padding: 17px; }
+      .grid { grid-template-columns: 1fr; }
+      .full { grid-column: auto; }
+      .controls button { flex: 1; }
     }
   </style>
 </head>
-
 <body>
-  <main class="container">
+  <main class="page">
     <header>
+      <div class="eyebrow">Voice-first digital khata</div>
       <h1>Udhaar Voice</h1>
-      <p>Manage customer credit and create Hindi payment reminders using your voice.</p>
+      <p class="subtitle">Record a customer's udhaar details in Hindi, review the extracted information, then create a payment reminder in the customer's preferred language.</p>
     </header>
 
     <section class="card">
-      <h2>01. Record voice entry</h2>
-      <p>Try saying: राम ने चार सौ पचास रुपये उधार लिए थे पाँच दिन हो गए।</p>
-
-      <div class="actions">
-        <button id="startBtn">Start recording</button>
-        <button id="stopBtn" class="danger" disabled>Stop recording</button>
+      <div class="step"><span class="step-number">1</span><h2>Record the merchant's voice</h2></div>
+      <label for="inputLanguage">Language spoken by the merchant</label>
+      <select id="inputLanguage">
+        <option value="hi-IN">हिंदी (Hindi)</option>
+        <option value="en-IN">English (India)</option>
+        <option value="bn-IN">বাংলা (Bengali)</option>
+        <option value="gu-IN">ગુજરાતી (Gujarati)</option>
+        <option value="kn-IN">ಕನ್ನಡ (Kannada)</option>
+        <option value="ml-IN">മലയാളം (Malayalam)</option>
+        <option value="mr-IN">मराठी (Marathi)</option>
+        <option value="pa-IN">ਪੰਜਾਬੀ (Punjabi)</option>
+        <option value="ta-IN">தமிழ் (Tamil)</option>
+        <option value="te-IN">తెలుగు (Telugu)</option>
+      </select>
+      <p class="hint">Try saying in Hindi: “राम ने चार सौ पचास रुपये उधार लिए थे, पाँच दिन हो गए।” Allow microphone access when your browser asks.</p>
+      <div class="controls">
+        <button id="startBtn" class="primary">● Start recording</button>
+        <button id="stopBtn" class="danger" disabled>■ Stop recording</button>
+        <button id="resetBtn" class="secondary">Reset</button>
       </div>
-
-      <p id="recordStatus" class="status">Ready to record.</p>
-      <audio id="recordingPreview" controls class="hidden"></audio>
-
-      <div style="margin-top:16px">
-        <button id="processBtn" disabled>Transcribe and extract details</button>
+      <div id="recordStatus" class="status">Microphone is idle.</div>
+      <audio id="recordedAudio" class="audio-preview hidden" controls></audio>
+      <div class="controls">
+        <button id="processBtn" class="primary" disabled>Transcribe & extract details</button>
       </div>
     </section>
 
-    <section id="transcriptCard" class="card hidden">
-      <h2>02. Transcription</h2>
-      <label>Recognized speech</label>
-      <div id="transcript" class="transcript"></div>
-
-      <label>Literal text</label>
-      <div id="literal" class="transcript"></div>
-
-      <p id="extractStatus" class="status"></p>
-    </section>
-
-    <section id="detailsCard" class="card hidden">
-      <h2>03. Review ledger details</h2>
-      <p>Check the extracted details and correct them if necessary.</p>
-
-      <label for="customerName">Customer name</label>
-      <input id="customerName" type="text" placeholder="Customer name" />
-
-      <div class="field-grid">
+    <section class="card">
+      <div class="step"><span class="step-number">2</span><h2>Review the extracted details</h2></div>
+      <label for="transcript">Recognized transcript</label>
+      <textarea id="transcript" placeholder="Your recognized speech will appear here..."></textarea>
+      <div class="field-note">You can correct the transcript and run extraction again if needed.</div>
+      <div class="controls">
+        <button id="extractBtn" class="secondary" disabled>Extract from transcript</button>
+      </div>
+      <div class="grid">
+        <div>
+          <label for="customerName">Customer name</label>
+          <input id="customerName" type="text" placeholder="e.g. राम" />
+        </div>
         <div>
           <label for="amount">Amount (₹)</label>
-          <input id="amount" type="number" min="1" />
+          <input id="amount" type="number" min="1" step="1" placeholder="e.g. 450" />
         </div>
-        <div>
+        <div class="full">
           <label for="days">Days pending</label>
-          <input id="days" type="number" min="0" />
+          <input id="days" type="number" min="0" step="1" placeholder="e.g. 5" />
         </div>
       </div>
-
-      <p id="detailsStatus" class="status"></p>
-
-      <button id="remindBtn">Generate Hindi reminder</button>
+      <div id="extractStatus" class="status">No details extracted yet.</div>
     </section>
 
-    <section id="reminderCard" class="card hidden">
-      <h2>04. Your payment reminder</h2>
-
-      <label>Reminder message</label>
-      <div id="reminderText" class="transcript"></div>
-
-      <audio id="reminderAudio" controls></audio>
-      <p id="reminderStatus" class="status success">
-        Your reminder is ready.
-      </p>
+    <section class="card">
+      <div class="step"><span class="step-number">3</span><h2>Generate a multilingual reminder</h2></div>
+      <label for="language">Customer's preferred reminder language</label>
+      <select id="language">
+        <option value="hi-IN">हिंदी (Hindi)</option>
+        <option value="en-IN">English (India)</option>
+        <option value="bn-IN">বাংলা (Bengali)</option>
+        <option value="gu-IN">ગુજરાતી (Gujarati)</option>
+        <option value="kn-IN">ಕನ್ನಡ (Kannada)</option>
+        <option value="ml-IN">മലയാളം (Malayalam)</option>
+        <option value="mr-IN">मराठी (Marathi)</option>
+        <option value="pa-IN">ਪੰਜਾਬੀ (Punjabi)</option>
+        <option value="ta-IN">தமிழ் (Tamil)</option>
+        <option value="te-IN">తెలుగు (Telugu)</option>
+      </select>
+      <p class="hint">Prisma transcription accepts all 10 listed languages. Automatic customer-name, amount, and days extraction is currently Hindi-focused; for other languages, review the transcript and enter or correct the fields manually. The reminder can be generated in all 10 languages.</p>
+      <div class="controls">
+        <button id="remindBtn" class="primary">Generate reminder audio</button>
+      </div>
+      <div id="remindStatus" class="status">Fill in the customer details to generate a reminder.</div>
+      <div id="reminderResult" class="result hidden">
+        <strong>REMINDER MESSAGE</strong>
+        <div id="reminderText"></div>
+        <audio id="reminderAudio" class="audio-preview" controls></audio>
+      </div>
     </section>
+
+    <p class="footer">Udhaar Voice · Prototype · Review all extracted details before generating a reminder.</p>
   </main>
 
   <script>
-    const API = "http://127.0.0.1:8000";
+    const API_BASE = "http://127.0.0.1:8000";
 
     const startBtn = document.getElementById("startBtn");
     const stopBtn = document.getElementById("stopBtn");
+    const resetBtn = document.getElementById("resetBtn");
     const processBtn = document.getElementById("processBtn");
+    const extractBtn = document.getElementById("extractBtn");
     const remindBtn = document.getElementById("remindBtn");
 
     const recordStatus = document.getElementById("recordStatus");
     const extractStatus = document.getElementById("extractStatus");
-    const detailsStatus = document.getElementById("detailsStatus");
-    const reminderStatus = document.getElementById("reminderStatus");
+    const remindStatus = document.getElementById("remindStatus");
 
-    const transcriptCard = document.getElementById("transcriptCard");
-    const detailsCard = document.getElementById("detailsCard");
-    const reminderCard = document.getElementById("reminderCard");
-
-    let recorder = null;
+    let mediaRecorder = null;
     let audioChunks = [];
-    let recordingBlob = null;
+    let recordedBlob = null;
     let stream = null;
 
-    function showError(element, message) {
+    function setStatus(element, message, type = "") {
       element.textContent = message;
-      element.className = "status error";
+      element.className = "status" + (type ? " " + type : "");
     }
 
-    function showSuccess(element, message) {
-      element.textContent = message;
-      element.className = "status success";
-    }
-
-    async function readResponse(response) {
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.detail || `Request failed: ${response.status}`);
+    async function readError(response) {
+      try {
+        const data = await response.json();
+        if (data.detail) return typeof data.detail === "string" ? data.detail : JSON.stringify(data.detail);
+        return JSON.stringify(data);
+      } catch {
+        return `Request failed with HTTP ${response.status}`;
       }
-
-      return data;
     }
 
     startBtn.addEventListener("click", async () => {
       try {
-        if (!navigator.mediaDevices?.getUserMedia) {
-          throw new Error("Microphone access is not supported. Use localhost or HTTPS.");
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+          throw new Error("Microphone recording is unavailable. Open this page on localhost or HTTPS in a supported browser.");
         }
 
         stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        audioChunks = [];
+        recordedBlob = null;
 
-        const mimeType = [
-          "audio/webm;codecs=opus",
-          "audio/webm",
-          "audio/mp4"
-        ].find(type => MediaRecorder.isTypeSupported(type));
+        const mimeType = MediaRecorder.isTypeSupported("audio/webm;codecs=opus")
+          ? "audio/webm;codecs=opus"
+          : (MediaRecorder.isTypeSupported("audio/webm") ? "audio/webm" : "");
 
-        recorder = mimeType
+        mediaRecorder = mimeType
           ? new MediaRecorder(stream, { mimeType })
           : new MediaRecorder(stream);
 
-        audioChunks = [];
-        recordingBlob = null;
+        mediaRecorder.addEventListener("dataavailable", event => {
+          if (event.data && event.data.size > 0) audioChunks.push(event.data);
+        });
 
-        recorder.ondataavailable = event => {
-          if (event.data.size > 0) audioChunks.push(event.data);
-        };
+        mediaRecorder.addEventListener("stop", () => {
+          recordedBlob = new Blob(audioChunks, { type: mediaRecorder.mimeType || "audio/webm" });
+          const audioUrl = URL.createObjectURL(recordedBlob);
+          const player = document.getElementById("recordedAudio");
+          player.src = audioUrl;
+          player.classList.remove("hidden");
+          processBtn.disabled = recordedBlob.size === 0;
+          setStatus(recordStatus, `Recording saved locally (${(recordedBlob.size / 1024).toFixed(1)} KB). You can listen before processing.`, "success");
+          if (stream) stream.getTracks().forEach(track => track.stop());
+          stream = null;
+        });
 
-        recorder.onstop = () => {
-          recordingBlob = new Blob(audioChunks, {
-            type: recorder.mimeType
-          });
-
-          const preview = document.getElementById("recordingPreview");
-          preview.src = URL.createObjectURL(recordingBlob);
-          preview.classList.remove("hidden");
-
-          processBtn.disabled = false;
-          recordStatus.textContent = "Recording complete. Ready to process.";
-
-          if (stream) {
-            stream.getTracks().forEach(track => track.stop());
-            stream = null;
-          }
-        };
-
-        recorder.start();
-
+        mediaRecorder.start();
         startBtn.disabled = true;
         stopBtn.disabled = false;
         processBtn.disabled = true;
-        recordStatus.textContent = "Recording... Speak in Hindi.";
+        setStatus(recordStatus, "Recording… Speak clearly, then press Stop recording.", "live");
       } catch (error) {
-        showError(recordStatus, error.message);
+        setStatus(recordStatus, error.message || "Could not access the microphone.", "error");
       }
     });
 
     stopBtn.addEventListener("click", () => {
-      if (recorder && recorder.state !== "inactive") {
-        recorder.stop();
-        startBtn.disabled = false;
-        stopBtn.disabled = true;
+      if (mediaRecorder && mediaRecorder.state !== "inactive") {
+        mediaRecorder.stop();
       }
+      startBtn.disabled = false;
+      stopBtn.disabled = true;
     });
 
-    processBtn.addEventListener("click", async () => {
-      if (!recordingBlob) return;
+    resetBtn.addEventListener("click", () => {
+      if (mediaRecorder && mediaRecorder.state !== "inactive") mediaRecorder.stop();
+      if (stream) stream.getTracks().forEach(track => track.stop());
+      stream = null;
+      mediaRecorder = null;
+      audioChunks = [];
+      recordedBlob = null;
 
+      const player = document.getElementById("recordedAudio");
+      player.pause();
+      player.removeAttribute("src");
+      player.classList.add("hidden");
+
+      document.getElementById("transcript").value = "";
+      document.getElementById("customerName").value = "";
+      document.getElementById("amount").value = "";
+      document.getElementById("days").value = "";
+      document.getElementById("reminderResult").classList.add("hidden");
+      document.getElementById("reminderAudio").pause();
+      document.getElementById("reminderAudio").removeAttribute("src");
+
+      startBtn.disabled = false;
+      stopBtn.disabled = true;
       processBtn.disabled = true;
-      processBtn.textContent = "Processing...";
-      transcriptCard.classList.remove("hidden");
-      detailsCard.classList.add("hidden");
-      reminderCard.classList.add("hidden");
+      extractBtn.disabled = true;
+      setStatus(recordStatus, "Microphone is idle.");
+      setStatus(extractStatus, "No details extracted yet.");
+      setStatus(remindStatus, "Fill in the customer details to generate a reminder.");
+    });
+
+    async function extractDetails(transcript) {
+      if (!transcript.trim()) {
+        setStatus(extractStatus, "Please enter or transcribe some speech first.", "error");
+        return;
+      }
+
+      extractBtn.disabled = true;
+      setStatus(extractStatus, "Extracting customer name, amount and days…", "live");
+      try {
+        const response = await fetch(`${API_BASE}/extract`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ transcript })
+        });
+        if (!response.ok) throw new Error(await readError(response));
+
+        const data = await response.json();
+        document.getElementById("customerName").value = data.name ?? "";
+        document.getElementById("amount").value = data.amount ?? "";
+        document.getElementById("days").value = data.days ?? "";
+
+        const missing = Array.isArray(data.missing_fields) ? data.missing_fields : [];
+        const message = missing.length
+          ? `Extracted what was available. Please fill in: ${missing.join(", ")}.`
+          : "Customer details extracted successfully. Review or edit the fields before generating the reminder.";
+        setStatus(extractStatus, message, missing.length ? "" : "success");
+      } catch (error) {
+        setStatus(extractStatus, error.message || "Extraction failed.", "error");
+      } finally {
+        extractBtn.disabled = false;
+      }
+    }
+
+    processBtn.addEventListener("click", async () => {
+      if (!recordedBlob) return;
+      processBtn.disabled = true;
+      extractBtn.disabled = true;
+      setStatus(recordStatus, "Uploading audio and transcribing…", "live");
 
       try {
-        // 1. Send recording to Prisma STT
         const formData = new FormData();
-        const extension = recordingBlob.type.includes("mp4") ? "mp4" : "webm";
+        const extension = recordedBlob.type.includes("mp4") ? "m4a" : "webm";
+        formData.append("audio", recordedBlob, `udhaar-recording.${extension}`);
+        formData.append("language_code", document.getElementById("inputLanguage").value);
 
-        formData.append("audio", recordingBlob, `recording.${extension}`);
-
-        extractStatus.textContent = "Transcribing audio...";
-
-        const sttResponse = await fetch(`${API}/transcribe`, {
+        const response = await fetch(`${API_BASE}/transcribe`, {
           method: "POST",
           body: formData
         });
+        if (!response.ok) throw new Error(await readError(response));
 
-        const stt = await readResponse(sttResponse);
+        const data = await response.json();
+        if (!data.success) throw new Error(data.error || "Transcription was not successful.");
 
-        document.getElementById("transcript").textContent =
-          stt.transcript || "";
-
-        document.getElementById("literal").textContent =
-          stt.literal || stt.transcript || "";
-
-        // 2. Extract ledger information.
-        // Prefer literal because it expands spoken numbers into words.
-        extractStatus.textContent = "Extracting ledger details...";
-
-        const extractResponse = await fetch(`${API}/extract`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            transcript: stt.literal || stt.transcript
-          })
-        });
-
-        const extracted = await readResponse(extractResponse);
-
-        if (extracted.missing_fields?.length) {
-          showError(
-            extractStatus,
-            `Could not identify: ${extracted.missing_fields.join(", ")}. Please review the fields below.`
-          );
-        } else {
-          showSuccess(extractStatus, "Transcription and extraction successful.");
-        }
-
-        // 3. Show editable fields
-        document.getElementById("customerName").value =
-          extracted.name || "";
-
-        document.getElementById("amount").value =
-          extracted.amount ?? "";
-
-        document.getElementById("days").value =
-          extracted.days ?? "";
-
-        detailsCard.classList.remove("hidden");
-
-        detailsStatus.textContent = extracted.missing_fields?.length
-          ? "Some fields need manual correction."
-          : "Review the details before generating the reminder.";
-
+        const transcript = data.transcript || data.literal || "";
+        document.getElementById("transcript").value = transcript;
+        setStatus(recordStatus, `Transcription complete${data.model ? ` · ${data.model}` : ""}. Extracting details…`, "success");
+        extractBtn.disabled = false;
+        await extractDetails(transcript);
       } catch (error) {
-        showError(extractStatus, error.message);
+        setStatus(recordStatus, error.message || "Transcription failed.", "error");
       } finally {
-        processBtn.disabled = false;
-        processBtn.textContent = "Transcribe and extract details";
+        processBtn.disabled = !recordedBlob;
+        extractBtn.disabled = false;
       }
+    });
+
+    extractBtn.addEventListener("click", () => {
+      extractDetails(document.getElementById("transcript").value);
     });
 
     remindBtn.addEventListener("click", async () => {
       const name = document.getElementById("customerName").value.trim();
       const amount = Number(document.getElementById("amount").value);
       const days = Number(document.getElementById("days").value);
+      const language = document.getElementById("language").value;
 
-      if (!name || !Number.isInteger(amount) || amount <= 0 ||
-          !Number.isInteger(days) || days < 0) {
-        showError(detailsStatus, "Enter a valid name, positive amount and non-negative days.");
+      if (!name || !Number.isFinite(amount) || amount <= 0 || !Number.isInteger(days) || days < 0) {
+        setStatus(remindStatus, "Enter a customer name, a positive amount, and a valid number of pending days.", "error");
         return;
       }
 
       remindBtn.disabled = true;
-      remindBtn.textContent = "Generating audio...";
-      reminderCard.classList.add("hidden");
+      setStatus(remindStatus, "Generating reminder audio…", "live");
+      document.getElementById("reminderResult").classList.add("hidden");
 
       try {
-        // 4. Generate Hindi reminder with Timbre TTS
-        const response = await fetch(`${API}/remind`, {
+        const response = await fetch(`${API_BASE}/remind`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name, amount, days })
+          body: JSON.stringify({ name, amount, days, language })
         });
+        if (!response.ok) throw new Error(await readError(response));
 
-        const result = await readResponse(response);
+        const data = await response.json();
+        if (!data.success) throw new Error(data.error || "Reminder generation failed.");
 
-        document.getElementById("reminderText").textContent =
-          result.reminder_text;
-
+        document.getElementById("reminderText").textContent = data.reminder_text || "";
         const audio = document.getElementById("reminderAudio");
-        audio.src = new URL(result.audio_url, API).href;
+        const audioUrl = data.audio_url.startsWith("http")
+          ? data.audio_url
+          : `${API_BASE}${data.audio_url}`;
+        audio.src = audioUrl;
+        document.getElementById("reminderResult").classList.remove("hidden");
 
-        reminderCard.classList.remove("hidden");
-        showSuccess(reminderStatus, "Reminder generated successfully.");
-
-        // Attempt autoplay; controls remain available if browser blocks it.
-        try {
-          await audio.play();
-        } catch {
-          reminderStatus.textContent =
-            "Reminder generated. Press play to listen.";
-        }
-
-        reminderCard.scrollIntoView({ behavior: "smooth" });
-
+        const voiceInfo = data.voice ? ` · Voice: ${data.voice}` : "";
+        setStatus(remindStatus, `Reminder generated${voiceInfo}. Press Play to listen.`, "success");
       } catch (error) {
-        showError(reminderStatus, error.message);
-        reminderCard.classList.remove("hidden");
+        setStatus(remindStatus, error.message || "Could not generate reminder.", "error");
       } finally {
         remindBtn.disabled = false;
-        remindBtn.textContent = "Generate Hindi reminder";
       }
     });
   </script>
