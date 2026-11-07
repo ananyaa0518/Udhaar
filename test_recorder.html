@@ -2,180 +2,425 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Udhaar Voice - Mic Test</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 650px;
-            margin: 60px auto;
-            padding: 20px;
-            background: #f5f5f5;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Udhaar Voice</title>
+  <style>
+    * { box-sizing: border-box; }
 
-        .container {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-        }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, sans-serif;
+      background: #f5f5f4;
+      color: #1c1917;
+      min-height: 100vh;
+      padding: 32px 16px;
+    }
 
-        button {
-            padding: 12px 20px;
-            margin: 8px 5px 8px 0;
-            cursor: pointer;
-            border: none;
-            border-radius: 8px;
-            background: #2563eb;
-            color: white;
-        }
+    .container {
+      max-width: 620px;
+      margin: auto;
+    }
 
-        button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
+    header { margin-bottom: 28px; }
+    header h1 { margin: 0; font-size: 30px; }
+    header p { color: #78716c; margin-top: 8px; }
 
-        #status {
-            margin: 20px 0;
-            color: #2563eb;
-        }
+    .card {
+      background: white;
+      border: 1px solid #e7e5e4;
+      border-radius: 16px;
+      padding: 22px;
+      margin-bottom: 18px;
+    }
 
-        pre {
-            white-space: pre-wrap;
-            background: #f1f1f1;
-            padding: 15px;
-            border-radius: 8px;
-        }
+    h2 { font-size: 18px; margin: 0 0 16px; }
 
-        audio {
-            width: 100%;
-            margin-top: 15px;
-        }
-    </style>
+    button {
+      border: 0;
+      border-radius: 10px;
+      padding: 13px 18px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      background: #292524;
+      color: white;
+    }
+
+    button:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+    }
+
+    button.secondary {
+      background: #e7e5e4;
+      color: #292524;
+    }
+
+    button.danger { background: #b91c1c; }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .status {
+      color: #78716c;
+      font-size: 14px;
+      margin-top: 14px;
+      min-height: 20px;
+    }
+
+    .transcript {
+      background: #f5f5f4;
+      padding: 14px;
+      border-radius: 10px;
+      line-height: 1.7;
+      min-height: 48px;
+      white-space: pre-wrap;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      margin: 14px 0 6px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #d6d3d1;
+      border-radius: 9px;
+      font-size: 16px;
+    }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .hidden { display: none; }
+
+    .success { color: #15803d; }
+    .error { color: #b91c1c; }
+
+    audio { width: 100%; margin-top: 14px; }
+
+    @media (max-width: 480px) {
+      .field-grid { grid-template-columns: 1fr; }
+      body { padding: 20px 12px; }
+    }
+  </style>
 </head>
 
 <body>
-<div class="container">
+  <main class="container">
+    <header>
+      <h1>Udhaar Voice</h1>
+      <p>Manage customer credit and create Hindi payment reminders using your voice.</p>
+    </header>
 
-    <h2>🎙️ Udhaar Voice</h2>
-    <p>Test Hindi voice recording with Gnani Prisma STT.</p>
+    <section class="card">
+      <h2>01. Record voice entry</h2>
+      <p>Try saying: राम ने चार सौ पचास रुपये उधार लिए थे पाँच दिन हो गए।</p>
 
-    <button id="start">Start Recording</button>
-    <button id="stop" disabled>Stop Recording</button>
+      <div class="actions">
+        <button id="startBtn">Start recording</button>
+        <button id="stopBtn" class="danger" disabled>Stop recording</button>
+      </div>
 
-    <p id="status">Ready to record.</p>
+      <p id="recordStatus" class="status">Ready to record.</p>
+      <audio id="recordingPreview" controls class="hidden"></audio>
 
-    <h3>Audio Playback</h3>
-    <audio id="player" controls></audio>
+      <div style="margin-top:16px">
+        <button id="processBtn" disabled>Transcribe and extract details</button>
+      </div>
+    </section>
 
-    <h3>Transcript</h3>
-    <pre id="result">Your transcript will appear here.</pre>
+    <section id="transcriptCard" class="card hidden">
+      <h2>02. Transcription</h2>
+      <label>Recognized speech</label>
+      <div id="transcript" class="transcript"></div>
 
-</div>
+      <label>Literal text</label>
+      <div id="literal" class="transcript"></div>
 
-<script>
-    let recorder;
-    let chunks = [];
-    let stream;
+      <p id="extractStatus" class="status"></p>
+    </section>
 
-    const startBtn = document.getElementById("start");
-    const stopBtn = document.getElementById("stop");
-    const status = document.getElementById("status");
-    const result = document.getElementById("result");
-    const player = document.getElementById("player");
+    <section id="detailsCard" class="card hidden">
+      <h2>03. Review ledger details</h2>
+      <p>Check the extracted details and correct them if necessary.</p>
 
-    startBtn.onclick = async () => {
-        try {
-            stream = await navigator.mediaDevices.getUserMedia({
-                audio: true
-            });
+      <label for="customerName">Customer name</label>
+      <input id="customerName" type="text" placeholder="Customer name" />
 
-            const mimeType = MediaRecorder.isTypeSupported(
-                "audio/webm;codecs=opus"
-            ) ? "audio/webm;codecs=opus" : "";
+      <div class="field-grid">
+        <div>
+          <label for="amount">Amount (₹)</label>
+          <input id="amount" type="number" min="1" />
+        </div>
+        <div>
+          <label for="days">Days pending</label>
+          <input id="days" type="number" min="0" />
+        </div>
+      </div>
 
-            recorder = new MediaRecorder(
-                stream,
-                mimeType ? { mimeType } : {}
-            );
+      <p id="detailsStatus" class="status"></p>
 
-            chunks = [];
+      <button id="remindBtn">Generate Hindi reminder</button>
+    </section>
 
-            recorder.ondataavailable = event => {
-                if (event.data.size > 0) {
-                    chunks.push(event.data);
-                }
-            };
+    <section id="reminderCard" class="card hidden">
+      <h2>04. Your payment reminder</h2>
 
-            recorder.onstop = async () => {
-                const blob = new Blob(chunks, {
-                    type: recorder.mimeType
-                });
+      <label>Reminder message</label>
+      <div id="reminderText" class="transcript"></div>
 
-                player.src = URL.createObjectURL(blob);
+      <audio id="reminderAudio" controls></audio>
+      <p id="reminderStatus" class="status success">
+        Your reminder is ready.
+      </p>
+    </section>
+  </main>
 
-                const extension = blob.type.includes("mp4")
-                    ? "mp4"
-                    : "webm";
+  <script>
+    const API = "http://127.0.0.1:8000";
 
-                const formData = new FormData();
+    const startBtn = document.getElementById("startBtn");
+    const stopBtn = document.getElementById("stopBtn");
+    const processBtn = document.getElementById("processBtn");
+    const remindBtn = document.getElementById("remindBtn");
 
-                formData.append(
-                    "audio",
-                    blob,
-                    `recording.${extension}`
-                );
+    const recordStatus = document.getElementById("recordStatus");
+    const extractStatus = document.getElementById("extractStatus");
+    const detailsStatus = document.getElementById("detailsStatus");
+    const reminderStatus = document.getElementById("reminderStatus");
 
-                status.textContent = "Sending recording to Prisma...";
-                result.textContent = "Transcribing...";
+    const transcriptCard = document.getElementById("transcriptCard");
+    const detailsCard = document.getElementById("detailsCard");
+    const reminderCard = document.getElementById("reminderCard");
 
-                try {
-                    const response = await fetch(
-                        "http://127.0.0.1:8000/transcribe",
-                        {
-                            method: "POST",
-                            body: formData
-                        }
-                    );
+    let recorder = null;
+    let audioChunks = [];
+    let recordingBlob = null;
+    let stream = null;
 
-                    const data = await response.json();
+    function showError(element, message) {
+      element.textContent = message;
+      element.className = "status error";
+    }
 
-                    result.textContent = JSON.stringify(
-                        data, null, 2
-                    );
+    function showSuccess(element, message) {
+      element.textContent = message;
+      element.className = "status success";
+    }
 
-                    status.textContent = response.ok
-                        ? "Transcription successful!"
-                        : "Transcription failed!";
+    async function readResponse(response) {
+      const data = await response.json();
 
-                } catch (error) {
-                    status.textContent = "Request failed: " + error.message;
-                }
+      if (!response.ok) {
+        throw new Error(data.detail || `Request failed: ${response.status}`);
+      }
 
-                stream.getTracks().forEach(track => track.stop());
-            };
+      return data;
+    }
 
-            recorder.start();
-
-            status.textContent = "🔴 Recording... Speak in Hindi.";
-            startBtn.disabled = true;
-            stopBtn.disabled = false;
-
-        } catch (error) {
-            status.textContent = "Microphone error: " + error.message;
+    startBtn.addEventListener("click", async () => {
+      try {
+        if (!navigator.mediaDevices?.getUserMedia) {
+          throw new Error("Microphone access is not supported. Use localhost or HTTPS.");
         }
-    };
 
-    stopBtn.onclick = () => {
-        if (recorder && recorder.state === "recording") {
-            recorder.stop();
-            status.textContent = "Processing recording...";
-        }
+        stream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
+        const mimeType = [
+          "audio/webm;codecs=opus",
+          "audio/webm",
+          "audio/mp4"
+        ].find(type => MediaRecorder.isTypeSupported(type));
+
+        recorder = mimeType
+          ? new MediaRecorder(stream, { mimeType })
+          : new MediaRecorder(stream);
+
+        audioChunks = [];
+        recordingBlob = null;
+
+        recorder.ondataavailable = event => {
+          if (event.data.size > 0) audioChunks.push(event.data);
+        };
+
+        recorder.onstop = () => {
+          recordingBlob = new Blob(audioChunks, {
+            type: recorder.mimeType
+          });
+
+          const preview = document.getElementById("recordingPreview");
+          preview.src = URL.createObjectURL(recordingBlob);
+          preview.classList.remove("hidden");
+
+          processBtn.disabled = false;
+          recordStatus.textContent = "Recording complete. Ready to process.";
+
+          if (stream) {
+            stream.getTracks().forEach(track => track.stop());
+            stream = null;
+          }
+        };
+
+        recorder.start();
+
+        startBtn.disabled = true;
+        stopBtn.disabled = false;
+        processBtn.disabled = true;
+        recordStatus.textContent = "Recording... Speak in Hindi.";
+      } catch (error) {
+        showError(recordStatus, error.message);
+      }
+    });
+
+    stopBtn.addEventListener("click", () => {
+      if (recorder && recorder.state !== "inactive") {
+        recorder.stop();
         startBtn.disabled = false;
         stopBtn.disabled = true;
-    };
-</script>
+      }
+    });
 
+    processBtn.addEventListener("click", async () => {
+      if (!recordingBlob) return;
+
+      processBtn.disabled = true;
+      processBtn.textContent = "Processing...";
+      transcriptCard.classList.remove("hidden");
+      detailsCard.classList.add("hidden");
+      reminderCard.classList.add("hidden");
+
+      try {
+        // 1. Send recording to Prisma STT
+        const formData = new FormData();
+        const extension = recordingBlob.type.includes("mp4") ? "mp4" : "webm";
+
+        formData.append("audio", recordingBlob, `recording.${extension}`);
+
+        extractStatus.textContent = "Transcribing audio...";
+
+        const sttResponse = await fetch(`${API}/transcribe`, {
+          method: "POST",
+          body: formData
+        });
+
+        const stt = await readResponse(sttResponse);
+
+        document.getElementById("transcript").textContent =
+          stt.transcript || "";
+
+        document.getElementById("literal").textContent =
+          stt.literal || stt.transcript || "";
+
+        // 2. Extract ledger information.
+        // Prefer literal because it expands spoken numbers into words.
+        extractStatus.textContent = "Extracting ledger details...";
+
+        const extractResponse = await fetch(`${API}/extract`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            transcript: stt.literal || stt.transcript
+          })
+        });
+
+        const extracted = await readResponse(extractResponse);
+
+        if (extracted.missing_fields?.length) {
+          showError(
+            extractStatus,
+            `Could not identify: ${extracted.missing_fields.join(", ")}. Please review the fields below.`
+          );
+        } else {
+          showSuccess(extractStatus, "Transcription and extraction successful.");
+        }
+
+        // 3. Show editable fields
+        document.getElementById("customerName").value =
+          extracted.name || "";
+
+        document.getElementById("amount").value =
+          extracted.amount ?? "";
+
+        document.getElementById("days").value =
+          extracted.days ?? "";
+
+        detailsCard.classList.remove("hidden");
+
+        detailsStatus.textContent = extracted.missing_fields?.length
+          ? "Some fields need manual correction."
+          : "Review the details before generating the reminder.";
+
+      } catch (error) {
+        showError(extractStatus, error.message);
+      } finally {
+        processBtn.disabled = false;
+        processBtn.textContent = "Transcribe and extract details";
+      }
+    });
+
+    remindBtn.addEventListener("click", async () => {
+      const name = document.getElementById("customerName").value.trim();
+      const amount = Number(document.getElementById("amount").value);
+      const days = Number(document.getElementById("days").value);
+
+      if (!name || !Number.isInteger(amount) || amount <= 0 ||
+          !Number.isInteger(days) || days < 0) {
+        showError(detailsStatus, "Enter a valid name, positive amount and non-negative days.");
+        return;
+      }
+
+      remindBtn.disabled = true;
+      remindBtn.textContent = "Generating audio...";
+      reminderCard.classList.add("hidden");
+
+      try {
+        // 4. Generate Hindi reminder with Timbre TTS
+        const response = await fetch(`${API}/remind`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, amount, days })
+        });
+
+        const result = await readResponse(response);
+
+        document.getElementById("reminderText").textContent =
+          result.reminder_text;
+
+        const audio = document.getElementById("reminderAudio");
+        audio.src = new URL(result.audio_url, API).href;
+
+        reminderCard.classList.remove("hidden");
+        showSuccess(reminderStatus, "Reminder generated successfully.");
+
+        // Attempt autoplay; controls remain available if browser blocks it.
+        try {
+          await audio.play();
+        } catch {
+          reminderStatus.textContent =
+            "Reminder generated. Press play to listen.";
+        }
+
+        reminderCard.scrollIntoView({ behavior: "smooth" });
+
+      } catch (error) {
+        showError(reminderStatus, error.message);
+        reminderCard.classList.remove("hidden");
+      } finally {
+        remindBtn.disabled = false;
+        remindBtn.textContent = "Generate Hindi reminder";
+      }
+    });
+  </script>
 </body>
 </html>
