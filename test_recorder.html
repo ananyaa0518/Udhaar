@@ -50,13 +50,43 @@
 
       color: var(--ink);
 
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: Inter, "Noto Sans", "Noto Sans Devanagari", "Noto Sans Gurmukhi", "Nirmala UI", "Devanagari Sangam MN", "Gurmukhi MN", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
     }
 
     .page { max-width: 760px; margin: 0 auto; }
 
     header { margin-bottom: 24px; }
+
+    .header-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .ui-language {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 170px;
+    }
+
+    .ui-language label {
+      margin: 0;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: .02em;
+    }
+
+    .ui-language select {
+      padding: 9px 11px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+    }
 
     .eyebrow {
 
@@ -188,6 +218,8 @@
 
       .controls button { flex: 1; }
 
+      .ui-language { width: 100%; }
+
     }
 
   </style>
@@ -200,11 +232,35 @@
 
     <header>
 
-      <div class="eyebrow">Voice-first digital khata</div>
+      <div class="header-top">
 
-      <h1>Udhaar Voice</h1>
+        <div>
 
-      <p class="subtitle">Record a customer's udhaar details in Hindi, review the extracted information, then create a payment reminder in the customer's preferred language.</p>
+          <div class="eyebrow" data-i18n="eyebrow">Voice-first digital khata</div>
+
+          <h1 data-i18n="appTitle">Udhaar Voice</h1>
+
+          <p class="subtitle" data-i18n="subtitle">Record a customer's udhaar details in Hindi, review the extracted information, then create a payment reminder in the customer's preferred language.</p>
+
+        </div>
+
+        <div class="ui-language">
+
+          <label for="uiLanguage" data-i18n="interfaceLanguage">Interface language</label>
+
+          <select id="uiLanguage" data-i18n-aria-label="interfaceLanguageAria">
+
+            <option value="en">English</option>
+
+            <option value="hi">हिंदी</option>
+
+            <option value="pa">ਪੰਜਾਬੀ</option>
+
+          </select>
+
+        </div>
+
+      </div>
 
     </header>
 
@@ -212,9 +268,9 @@
 
     <section class="card">
 
-      <div class="step"><span class="step-number">1</span><h2>Record the merchant's voice</h2></div>
+      <div class="step"><span class="step-number">1</span><h2 data-i18n="recordHeading">Record the merchant's voice</h2></div>
 
-      <label for="inputLanguage">Language spoken by the merchant</label>
+      <label for="inputLanguage" data-i18n="inputLanguageLabel">Language spoken by the merchant</label>
 
       <select id="inputLanguage">
 
@@ -240,25 +296,25 @@
 
       </select>
 
-      <p class="hint">Try saying in Hindi: “राम ने चार सौ पचास रुपये उधार लिए थे, पाँच दिन हो गए।” Allow microphone access when your browser asks.</p>
+      <p class="hint" data-i18n="recordHint">Try saying in Hindi: “राम ने चार सौ पचास रुपये उधार लिए थे, पाँच दिन हो गए।” Allow microphone access when your browser asks.</p>
 
       <div class="controls">
 
-        <button id="startBtn" class="primary">● Start recording</button>
+        <button id="startBtn" class="primary" data-i18n="startRecording">● Start recording</button>
 
-        <button id="stopBtn" class="danger" disabled>■ Stop recording</button>
+        <button id="stopBtn" class="danger" disabled data-i18n="stopRecording">■ Stop recording</button>
 
-        <button id="resetBtn" class="secondary">Reset</button>
+        <button id="resetBtn" class="secondary" data-i18n="reset">Reset</button>
 
       </div>
 
-      <div id="recordStatus" class="status">Microphone is idle.</div>
+      <div id="recordStatus" class="status" data-status-key="recordStatusIdle">Microphone is idle.</div>
 
-      <audio id="recordedAudio" class="audio-preview hidden" controls></audio>
+      <audio id="recordedAudio" class="audio-preview hidden" controls data-i18n-aria-label="recordedAudioLabel"></audio>
 
       <div class="controls">
 
-        <button id="processBtn" class="primary" disabled>Transcribe *&* extract details</button>
+        <button id="processBtn" class="primary" disabled data-i18n="processBtn">Transcribe &amp; extract details</button>
 
       </div>
 
@@ -268,17 +324,17 @@
 
     <section class="card">
 
-      <div class="step"><span class="step-number">2</span><h2>Review the extracted details</h2></div>
+      <div class="step"><span class="step-number">2</span><h2 data-i18n="reviewHeading">Review the extracted details</h2></div>
 
-      <label for="transcript">Recognized transcript</label>
+      <label for="transcript" data-i18n="transcriptLabel">Recognized transcript</label>
 
-      <textarea id="transcript" placeholder="Your recognized speech will appear here..."></textarea>
+      <textarea id="transcript" data-i18n-placeholder="transcriptPlaceholder" placeholder="Your recognized speech will appear here..."></textarea>
 
-      <div class="field-note">You can correct the transcript and run extraction again if needed.</div>
+      <div class="field-note" data-i18n="transcriptNote">You can correct the transcript and run extraction again if needed.</div>
 
       <div class="controls">
 
-        <button id="extractBtn" class="secondary" disabled>Extract from transcript</button>
+        <button id="extractBtn" class="secondary" disabled data-i18n="extractBtn">Extract from transcript</button>
 
       </div>
 
@@ -286,31 +342,31 @@
 
         <div>
 
-          <label for="customerName">Customer name</label>
+          <label for="customerName" data-i18n="customerName">Customer name</label>
 
-          <input id="customerName" type="text" placeholder="e.g. राम" />
+          <input id="customerName" type="text" data-i18n-placeholder="customerNamePlaceholder" placeholder="e.g. राम" />
 
         </div>
 
         <div>
 
-          <label for="amount">Amount (₹)</label>
+          <label for="amount" data-i18n="amount">Amount (₹)</label>
 
-          <input id="amount" type="number" min="1" step="1" placeholder="e.g. 450" />
+          <input id="amount" type="number" min="1" step="1" data-i18n-placeholder="amountPlaceholder" placeholder="e.g. 450" />
 
         </div>
 
         <div class="full">
 
-          <label for="days">Days pending</label>
+          <label for="days" data-i18n="daysPending">Days pending</label>
 
-          <input id="days" type="number" min="0" step="1" placeholder="e.g. 5" />
+          <input id="days" type="number" min="0" step="1" data-i18n-placeholder="daysPlaceholder" placeholder="e.g. 5" />
 
         </div>
 
       </div>
 
-      <div id="extractStatus" class="status">No details extracted yet.</div>
+      <div id="extractStatus" class="status" data-status-key="extractStatusNone">No details extracted yet.</div>
 
     </section>
 
@@ -318,36 +374,36 @@
 
   
   <section class="card">
-    <div class="step"><span class="step-number">3</span><h2>Save transaction to Supabase ledger</h2></div>
-    <p class="hint">Review the transaction type before saving. Credit increases the customer's outstanding balance; payment reduces it.</p>
-    <label>Transaction type</label>
+    <div class="step"><span class="step-number">3</span><h2 data-i18n="saveHeading">Save transaction to Supabase ledger</h2></div>
+    <p class="hint" data-i18n="saveHint">Review the transaction type before saving. Credit increases the customer's outstanding balance; payment reduces it.</p>
+    <label data-i18n="transactionTypeLabel">Transaction type</label>
     <div class="transaction-type">
-      <label><input type="radio" name="transactionType" value="credit" checked /> Credit / उधार दिया</label>
-      <label><input type="radio" name="transactionType" value="payment" /> Payment / पैसा वापस मिला</label>
+      <label><input type="radio" name="transactionType" value="credit" checked /> <span data-i18n="creditOption">Credit / उधार दिया</span></label>
+      <label><input type="radio" name="transactionType" value="payment" /> <span data-i18n="paymentOption">Payment / पैसा वापस मिला</span></label>
     </div>
-    <label for="ledgerNote">Note (optional)</label>
-    <input id="ledgerNote" type="text" maxlength="500" placeholder="e.g. Voice recorded transaction" />
+    <label for="ledgerNote" data-i18n="noteLabel">Note (optional)</label>
+    <input id="ledgerNote" type="text" maxlength="500" data-i18n-placeholder="notePlaceholder" placeholder="e.g. Voice recorded transaction" />
     <div class="controls">
-      <button id="saveLedgerBtn" class="primary">Save to Ledger</button>
-      <button id="historyBtn" class="secondary" disabled>Refresh history</button>
+      <button id="saveLedgerBtn" class="primary" data-i18n="saveLedgerBtn">Save to Ledger</button>
+      <button id="historyBtn" class="secondary" disabled data-i18n="historyBtn">Refresh history</button>
     </div>
-    <div id="ledgerStatus" class="status">Extract the customer name and amount, then save the transaction.</div>
+    <div id="ledgerStatus" class="status" data-status-key="ledgerStatusInitial">Extract the customer name and amount, then save the transaction.</div>
     <div id="balanceResult" class="balance-card hidden">
-      <div>UPDATED OUTSTANDING BALANCE</div>
+      <div data-i18n="outstandingBalanceLabel">UPDATED OUTSTANDING BALANCE</div>
       <div id="balanceAmount" class="amount">₹0.00</div>
       <div id="customerLedgerName"></div>
     </div>
     <div id="historyResult" class="result hidden">
-      <strong>TRANSACTION HISTORY</strong>
+      <strong data-i18n="transactionHistoryLabel">TRANSACTION HISTORY</strong>
       <ul id="historyList" class="history-list"></ul>
     </div>
   </section>
 
   <section class="card">
 
-      <div class="step"><span class="step-number">4</span><h2>Generate a multilingual reminder</h2></div>
+      <div class="step"><span class="step-number">4</span><h2 data-i18n="reminderHeading">Generate a multilingual reminder</h2></div>
 
-      <label for="language">Customer's preferred reminder language</label>
+      <label for="language" data-i18n="reminderLanguageLabel">Customer's preferred reminder language</label>
 
       <select id="language">
 
@@ -373,23 +429,23 @@
 
       </select>
 
-      <p class="hint">Prisma transcription accepts all 10 listed languages. Automatic customer-name, amount, and days extraction is currently Hindi-focused; for other languages, review the transcript and enter or correct the fields manually. The reminder can be generated in all 10 languages.</p>
+      <p class="hint" data-i18n="reminderHint">Prisma transcription accepts all 10 listed languages. Automatic customer-name, amount, and days extraction is currently Hindi-focused; for other languages, review the transcript and enter or correct the fields manually. The reminder can be generated in all 10 languages.</p>
 
       <div class="controls">
 
-        <button id="remindBtn" class="primary">Generate reminder audio</button>
+        <button id="remindBtn" class="primary" data-i18n="remindBtn">Generate reminder audio</button>
 
       </div>
 
-      <div id="remindStatus" class="status">Fill in the customer details to generate a reminder.</div>
+      <div id="remindStatus" class="status" data-status-key="remindStatusInitial">Fill in the customer details to generate a reminder.</div>
 
       <div id="reminderResult" class="result hidden">
 
-        <strong>REMINDER MESSAGE</strong>
+        <strong data-i18n="reminderMessageLabel">REMINDER MESSAGE</strong>
 
         <div id="reminderText"></div>
 
-        <audio id="reminderAudio" class="audio-preview" controls></audio>
+        <audio id="reminderAudio" class="audio-preview" controls data-i18n-aria-label="reminderAudioLabel"></audio>
 
       </div>
 
@@ -397,7 +453,7 @@
 
 
 
-    <p class="footer">Udhaar Voice · Prototype · Review all extracted details before generating a reminder.</p>
+    <p class="footer" data-i18n="footer">Udhaar Voice · Prototype · Review all extracted details before generating a reminder.</p>
 
   </main>
 
@@ -407,7 +463,420 @@
 
     const API_BASE = "http://127.0.0.1:8000";
 
+    const SUPPORTED_UI_LANGUAGES = ["en", "hi", "pa"];
+    const UI_LANGUAGE_STORAGE_KEY = "udhaar.uiLanguage";
+    const DEFAULT_UI_LANGUAGE = "en";
 
+    const translations = {
+      en: {
+        pageTitle: "Udhaar Voice — Recorder",
+        eyebrow: "Voice-first digital khata",
+        appTitle: "Udhaar Voice",
+        subtitle: "Record a customer's udhaar details in Hindi, review the extracted information, then create a payment reminder in the customer's preferred language.",
+        interfaceLanguage: "Interface language",
+        interfaceLanguageAria: "Choose the interface language",
+        recordHeading: "Record the merchant's voice",
+        inputLanguageLabel: "Language spoken by the merchant",
+        recordHint: "Try saying in Hindi: “राम ने चार सौ पचास रुपये उधार लिए थे, पाँच दिन हो गए।” Allow microphone access when your browser asks.",
+        startRecording: "● Start recording",
+        stopRecording: "■ Stop recording",
+        reset: "Reset",
+        recordedAudioLabel: "Recording preview",
+        processBtn: "Transcribe & extract details",
+        reviewHeading: "Review the extracted details",
+        transcriptLabel: "Recognized transcript",
+        transcriptPlaceholder: "Your recognized speech will appear here...",
+        transcriptNote: "You can correct the transcript and run extraction again if needed.",
+        extractBtn: "Extract from transcript",
+        customerName: "Customer name",
+        customerNamePlaceholder: "e.g. राम",
+        amount: "Amount (₹)",
+        amountPlaceholder: "e.g. 450",
+        daysPending: "Days pending",
+        daysPlaceholder: "e.g. 5",
+        saveHeading: "Save transaction to Supabase ledger",
+        saveHint: "Review the transaction type before saving. Credit increases the customer's outstanding balance; payment reduces it.",
+        transactionTypeLabel: "Transaction type",
+        creditOption: "Credit / उधार दिया",
+        paymentOption: "Payment / पैसा वापस मिला",
+        noteLabel: "Note (optional)",
+        notePlaceholder: "e.g. Voice recorded transaction",
+        saveLedgerBtn: "Save to Ledger",
+        historyBtn: "Refresh history",
+        outstandingBalanceLabel: "UPDATED OUTSTANDING BALANCE",
+        transactionHistoryLabel: "TRANSACTION HISTORY",
+        reminderHeading: "Generate a multilingual reminder",
+        reminderLanguageLabel: "Customer's preferred reminder language",
+        reminderHint: "Prisma transcription accepts all 10 listed languages. Automatic customer-name, amount, and days extraction is currently Hindi-focused; for other languages, review the transcript and enter or correct the fields manually. The reminder can be generated in all 10 languages.",
+        remindBtn: "Generate reminder audio",
+        reminderMessageLabel: "REMINDER MESSAGE",
+        reminderAudioLabel: "Reminder audio",
+        footer: "Udhaar Voice · Prototype · Review all extracted details before generating a reminder.",
+        recordStatusIdle: "Microphone is idle.",
+        extractStatusNone: "No details extracted yet.",
+        ledgerStatusInitial: "Extract the customer name and amount, then save the transaction.",
+        remindStatusInitial: "Fill in the customer details to generate a reminder.",
+        recordingSaved: "Recording saved locally ({size} KB). You can listen before processing.",
+        recordingLive: "Recording… Speak clearly, then press Stop recording.",
+        micAccessError: "Could not access the microphone.{detail}",
+        enterSpeechFirst: "Please enter or transcribe some speech first.",
+        extracting: "Extracting customer name, amount and days…",
+        extractionPartial: "Extracted what was available. Please fill in: {fields}.",
+        extractionSuccess: "Customer details extracted successfully. Review or edit the fields before generating the reminder.",
+        errExtractionFailed: "Extraction failed.",
+        uploadingTranscribing: "Uploading audio and transcribing…",
+        transcriptionComplete: "Transcription complete{model}. Extracting details…",
+        errTranscriptionFailed: "Transcription failed.",
+        enterNameAmount: "Enter a customer name and a positive amount before saving.",
+        savingLedger: "Saving transaction to Supabase…",
+        ledgerSaved: "{type} of ₹{amount} saved successfully.",
+        errSaveTransaction: "Could not save transaction.",
+        errLoadHistory: "Could not load history.",
+        enterReminderDetails: "Enter a customer name, a positive amount, and a valid number of pending days.",
+        generatingReminder: "Generating reminder audio…",
+        reminderGenerated: "Reminder generated{voice}. Press Play to listen.",
+        errReminderFailed: "Could not generate reminder.",
+        errorDetail: "Error: {detail}",
+        requestFailedHttp: "Request failed with HTTP {status}",
+        unknownError: "Unknown error.",
+        micUnavailable: "Microphone recording is unavailable. Open this page on localhost or HTTPS in a supported browser.",
+        field_name: "customer name",
+        field_amount: "amount",
+        field_days: "days",
+        voiceLabel: "Voice",
+        creditShort: "Credit",
+        paymentShort: "Payment",
+        newCustomerCreated: "New customer created",
+        existingCustomerUpdated: "Existing customer updated",
+        historyEmpty: "No transactions found.",
+        defaultLedgerNote: "Voice recorded transaction"
+      },
+
+      hi: {
+        pageTitle: "उधार वॉइस — रिकॉर्डर",
+        eyebrow: "आवाज़-आधारित डिजिटल खाता",
+        appTitle: "उधार वॉइस",
+        subtitle: "ग्राहक के उधार की जानकारी हिंदी में रिकॉर्ड करें, निकाली गई जानकारी की समीक्षा करें, और ग्राहक की पसंदीदा भाषा में भुगतान अनुस्मारक बनाएँ।",
+        interfaceLanguage: "इंटरफ़ेस भाषा",
+        interfaceLanguageAria: "इंटरफ़ेस भाषा चुनें",
+        recordHeading: "दुकानदार की आवाज़ रिकॉर्ड करें",
+        inputLanguageLabel: "दुकानदार द्वारा बोली जाने वाली भाषा",
+        recordHint: "हिंदी में कहकर देखें: “राम ने चार सौ पचास रुपये उधार लिए थे, पाँच दिन हो गए।” जब ब्राउज़र पूछे तो माइक्रोफ़ोन की अनुमति दें।",
+        startRecording: "● रिकॉर्डिंग शुरू करें",
+        stopRecording: "■ रिकॉर्डिंग रोकें",
+        reset: "रीसेट करें",
+        recordedAudioLabel: "रिकॉर्डिंग पूर्वावलोकन",
+        processBtn: "ट्रांसक्राइब करें और जानकारी निकालें",
+        reviewHeading: "निकाली गई जानकारी की समीक्षा करें",
+        transcriptLabel: "पहचाना गया ट्रांसक्रिप्ट",
+        transcriptPlaceholder: "आपकी बोली हुई बात यहाँ दिखाई देगी...",
+        transcriptNote: "ज़रूरत पड़ने पर ट्रांसक्रिप्ट सुधारें और फिर से जानकारी निकालें।",
+        extractBtn: "ट्रांसक्रिप्ट से जानकारी निकालें",
+        customerName: "ग्राहक का नाम",
+        customerNamePlaceholder: "उदा. राम",
+        amount: "राशि (₹)",
+        amountPlaceholder: "उदा. 450",
+        daysPending: "कितने दिन से बकाया",
+        daysPlaceholder: "उदा. 5",
+        saveHeading: "लेन-देन को Supabase खाते में सेव करें",
+        saveHint: "सेव करने से पहले लेन-देन का प्रकार जाँचें। उधार ग्राहक का कुल बकाया बढ़ाता है; भुगतान उसे घटाता है।",
+        transactionTypeLabel: "लेन-देन का प्रकार",
+        creditOption: "उधार / दिया गया",
+        paymentOption: "भुगतान / वापस मिला",
+        noteLabel: "टिप्पणी (वैकल्पिक)",
+        notePlaceholder: "उदा. आवाज़ से दर्ज किया गया लेन-देन",
+        saveLedgerBtn: "खाते में सेव करें",
+        historyBtn: "इतिहास रीफ़्रेश करें",
+        outstandingBalanceLabel: "अद्यतन कुल बकाया",
+        transactionHistoryLabel: "लेन-देन का इतिहास",
+        reminderHeading: "बहुभाषी अनुस्मारक बनाएँ",
+        reminderLanguageLabel: "ग्राहक की पसंदीदा अनुस्मारक भाषा",
+        reminderHint: "Prisma ट्रांसक्रिप्शन सभी 10 सूचीबद्ध भाषाओं को स्वीकार करता है। ग्राहक का नाम, राशि और दिनों की स्वचालित पहचान अभी हिंदी पर केंद्रित है; अन्य भाषाओं के लिए ट्रांसक्रिप्ट की समीक्षा करें और फ़ील्ड मैन्युअल रूप से भरें या सुधारें। अनुस्मारक सभी 10 भाषाओं में बनाया जा सकता है।",
+        remindBtn: "अनुस्मारक ऑडियो बनाएँ",
+        reminderMessageLabel: "अनुस्मारक संदेश",
+        reminderAudioLabel: "अनुस्मारक ऑडियो",
+        footer: "उधार वॉइस · प्रोटोटाइप · अनुस्मारक बनाने से पहले सभी निकाली गई जानकारी की समीक्षा करें।",
+        recordStatusIdle: "माइक्रोफ़ोन निष्क्रिय है।",
+        extractStatusNone: "अभी कोई जानकारी नहीं निकाली गई।",
+        ledgerStatusInitial: "ग्राहक का नाम और राशि भरें, फिर लेन-देन सेव करें।",
+        remindStatusInitial: "अनुस्मारक बनाने के लिए ग्राहक की जानकारी भरें।",
+        recordingSaved: "रिकॉर्डिंग स्थानीय रूप से सेव हो गई ({size} KB)। प्रोसेस करने से पहले आप इसे सुन सकते हैं।",
+        recordingLive: "रिकॉर्डिंग हो रही है… स्पष्ट बोलें, फिर रिकॉर्डिंग रोकें दबाएँ।",
+        micAccessError: "माइक्रोफ़ोन तक पहुँच नहीं हो सकी।{detail}",
+        enterSpeechFirst: "कृपया पहले कुछ बोलें या ट्रांसक्राइब करें।",
+        extracting: "ग्राहक का नाम, राशि और दिन निकाले जा रहे हैं…",
+        extractionPartial: "जो जानकारी उपलब्ध थी वह निकाल ली गई। कृपया ये भरें: {fields}।",
+        extractionSuccess: "ग्राहक की जानकारी सफलतापूर्वक निकाली गई। अनुस्मारक बनाने से पहले फ़ील्ड की समीक्षा करें या उन्हें संपादित करें।",
+        errExtractionFailed: "जानकारी निकालने में विफलता।",
+        uploadingTranscribing: "ऑडियो अपलोड हो रहा है और ट्रांसक्राइब किया जा रहा है…",
+        transcriptionComplete: "ट्रांसक्रिप्शन पूरा हुआ{model}। जानकारी निकाली जा रही है…",
+        errTranscriptionFailed: "ट्रांसक्रिप्शन विफल रहा।",
+        enterNameAmount: "सेव करने से पहले ग्राहक का नाम और सकारात्मक राशि भरें।",
+        savingLedger: "लेन-देन Supabase में सेव हो रहा है…",
+        ledgerSaved: "{type} ₹{amount} सफलतापूर्वक सेव हो गया।",
+        errSaveTransaction: "लेन-देन सेव नहीं हो सका।",
+        errLoadHistory: "इतिहास लोड नहीं हो सका।",
+        enterReminderDetails: "ग्राहक का नाम, सकारात्मक राशि और बकाया दिनों की सही संख्या भरें।",
+        generatingReminder: "अनुस्मारक ऑडियो बनाया जा रहा है…",
+        reminderGenerated: "अनुस्मारक बन गया{voice}। सुनने के लिए प्ले दबाएँ।",
+        errReminderFailed: "अनुस्मारक नहीं बन सका।",
+        errorDetail: "त्रुटि: {detail}",
+        requestFailedHttp: "अनुरोध HTTP {status} के साथ विफल रहा",
+        unknownError: "अज्ञात त्रुटि।",
+        micUnavailable: "माइक्रोफ़ोन रिकॉर्डिंग उपलब्ध नहीं है। इस पेज को localhost या किसी समर्थित ब्राउज़र में HTTPS पर खोलें।",
+        field_name: "ग्राहक का नाम",
+        field_amount: "राशि",
+        field_days: "दिन",
+        voiceLabel: "आवाज़",
+        creditShort: "उधार",
+        paymentShort: "भुगतान",
+        newCustomerCreated: "नया ग्राहक बनाया गया",
+        existingCustomerUpdated: "मौजूदा ग्राहक अपडेट किया गया",
+        historyEmpty: "कोई लेन-देन नहीं मिला।",
+        defaultLedgerNote: "आवाज़ से दर्ज किया गया लेन-देन"
+      },
+
+      pa: {
+        pageTitle: "ਉਧਾਰ ਵਾਇਸ — ਰਿਕਾਰਡਰ",
+        eyebrow: "ਆਵਾਜ਼-ਆਧਾਰਿਤ ਡਿਜੀਟਲ ਖਾਤਾ",
+        appTitle: "ਉਧਾਰ ਵਾਇਸ",
+        subtitle: "ਗਾਹਕ ਦੀ ਉਧਾਰ ਜਾਣਕਾਰੀ ਪੰਜਾਬੀ ਵਿੱਚ ਰਿਕਾਰਡ ਕਰੋ, ਕੱਢੀ ਗਈ ਜਾਣਕਾਰੀ ਦੀ ਸਮੀਖਿਆ ਕਰੋ, ਅਤੇ ਗਾਹਕ ਦੀ ਪਸੰਦੀਦਾ ਭਾਸ਼ਾ ਵਿੱਚ ਭੁਗਤਾਨ ਯਾਦਦਿਹਾਨੀ ਬਣਾਓ।",
+        interfaceLanguage: "ਇੰਟਰਫ਼ੇਸ ਭਾਸ਼ਾ",
+        interfaceLanguageAria: "ਇੰਟਰਫ਼ੇਸ ਭਾਸ਼ਾ ਚੁਣੋ",
+        recordHeading: "ਦੁਕਾਨਦਾਰ ਦੀ ਆਵਾਜ਼ ਰਿਕਾਰਡ ਕਰੋ",
+        inputLanguageLabel: "ਦੁਕਾਨਦਾਰ ਵੱਲੋਂ ਬੋਲੀ ਜਾਣ ਵਾਲੀ ਭਾਸ਼ਾ",
+        recordHint: "ਪੰਜਾਬੀ ਵਿੱਚ ਕਹਿ ਕੇ ਵੇਖੋ: “ਰਾਮ ਨੇ ਚਾਰ ਸੌ ਪੰਜਾਹ ਰੁਪਏ ਉਧਾਰ ਲਏ ਸਨ, ਪੰਜ ਦਿਨ ਹੋ ਗਏ।” ਜਦੋਂ ਬ੍ਰਾਊਜ਼ਰ ਪੁੱਛੇ ਤਾਂ ਮਾਈਕ੍ਰੋਫ਼ੋਨ ਦੀ ਇਜਾਜ਼ਤ ਦਿਓ।",
+        startRecording: "● ਰਿਕਾਰਡਿੰਗ ਸ਼ੁਰੂ ਕਰੋ",
+        stopRecording: "■ ਰਿਕਾਰਡਿੰਗ ਰੋਕੋ",
+        reset: "ਰੀਸੈਟ ਕਰੋ",
+        recordedAudioLabel: "ਰਿਕਾਰਡਿੰਗ ਝਲਕ",
+        processBtn: "ਟ੍ਰਾਂਸਕ੍ਰਾਈਬ ਕਰੋ ਤੇ ਜਾਣਕਾਰੀ ਕੱਢੋ",
+        reviewHeading: "ਕੱਢੀ ਗਈ ਜਾਣਕਾਰੀ ਦੀ ਸਮੀਖਿਆ ਕਰੋ",
+        transcriptLabel: "ਪਛਾਣਿਆ ਗਿਆ ਟ੍ਰਾਂਸਕ੍ਰਿਪਟ",
+        transcriptPlaceholder: "ਤੁਹਾਡੀ ਬੋਲੀ ਗੱਲ ਇੱਥੇ ਦਿਸੇਗੀ...",
+        transcriptNote: "ਲੋੜ ਪਏ ਤਾਂ ਟ੍ਰਾਂਸਕ੍ਰਿਪਟ ਸੁਧਾਰੋ ਅਤੇ ਦੁਬਾਰਾ ਜਾਣਕਾਰੀ ਕੱਢੋ।",
+        extractBtn: "ਟ੍ਰਾਂਸਕ੍ਰਿਪਟ ਤੋਂ ਜਾਣਕਾਰੀ ਕੱਢੋ",
+        customerName: "ਗਾਹਕ ਦਾ ਨਾਮ",
+        customerNamePlaceholder: "ਉਦਾ. ਰਾਮ",
+        amount: "ਰਕਮ (₹)",
+        amountPlaceholder: "ਉਦਾ. 450",
+        daysPending: "ਕਿੰਨੇ ਦਿਨਾਂ ਤੋਂ ਬਕਾਇਆ",
+        daysPlaceholder: "ਉਦਾ. 5",
+        saveHeading: "ਲੈਣ-ਦੇਣ ਨੂੰ Supabase ਖਾਤੇ ਵਿੱਚ ਸੇਵ ਕਰੋ",
+        saveHint: "ਸੇਵ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਲੈਣ-ਦੇਣ ਦੀ ਕਿਸਮ ਜਾਂਚੋ। ਉਧਾਰ ਗਾਹਕ ਦਾ ਕੁੱਲ ਬਕਾਇਆ ਵਧਾਉਂਦਾ ਹੈ; ਭੁਗਤਾਨ ਘਟਾਉਂਦਾ ਹੈ।",
+        transactionTypeLabel: "ਲੈਣ-ਦੇਣ ਦੀ ਕਿਸਮ",
+        creditOption: "ਉਧਾਰ / ਦਿੱਤਾ",
+        paymentOption: "ਭੁਗਤਾਨ / ਵਾਪਸ ਮਿਲਿਆ",
+        noteLabel: "ਟਿੱਪਣੀ (ਵੈਕਲਪਿਕ)",
+        notePlaceholder: "ਉਦਾ. ਆਵਾਜ਼ ਨਾਲ ਦਰਜ ਲੈਣ-ਦੇਣ",
+        saveLedgerBtn: "ਖਾਤੇ ਵਿੱਚ ਸੇਵ ਕਰੋ",
+        historyBtn: "ਇਤਿਹਾਸ ਰੀਫ਼੍ਰੈਸ਼ ਕਰੋ",
+        outstandingBalanceLabel: "ਅੱਪਡੇਟ ਕੀਤਾ ਕੁੱਲ ਬਕਾਇਆ",
+        transactionHistoryLabel: "ਲੈਣ-ਦੇਣ ਦਾ ਇਤਿਹਾਸ",
+        reminderHeading: "ਬਹੁ-ਭਾਸ਼ਾਈ ਯਾਦਦਿਹਾਨੀ ਬਣਾਓ",
+        reminderLanguageLabel: "ਗਾਹਕ ਦੀ ਪਸੰਦੀਦਾ ਯਾਦਦਿਹਾਨੀ ਭਾਸ਼ਾ",
+        reminderHint: "Prisma ਟ੍ਰਾਂਸਕ੍ਰਿਪਸ਼ਨ ਸਾਰੀਆਂ 10 ਦਿੱਤੀਆਂ ਭਾਸ਼ਾਵਾਂ ਨੂੰ ਸਵੀਕਾਰ ਕਰਦਾ ਹੈ। ਗਾਹਕ ਦਾ ਨਾਮ, ਰਕਮ ਅਤੇ ਦਿਨਾਂ ਦੀ ਆਪਣੇ-ਆਪ ਪਛਾਣ ਫ਼ਿਲਹਾਲ ਹਿੰਦੀ ਉੱਤੇ ਕੇਂਦਰਿਤ ਹੈ; ਹੋਰ ਭਾਸ਼ਾਵਾਂ ਲਈ ਟ੍ਰਾਂਸਕ੍ਰਿਪਟ ਦੀ ਸਮੀਖਿਆ ਕਰੋ ਅਤੇ ਖੇਤਰ ਹੱਥੋਂ ਭਰੋ ਜਾਂ ਸੁਧਾਰੋ। ਯਾਦਦਿਹਾਨੀ ਸਾਰੀਆਂ 10 ਭਾਸ਼ਾਵਾਂ ਵਿੱਚ ਬਣਾਈ ਜਾ ਸਕਦੀ ਹੈ।",
+        remindBtn: "ਯਾਦਦਿਹਾਨੀ ਆਡੀਓ ਬਣਾਓ",
+        reminderMessageLabel: "ਯਾਦਦਿਹਾਨੀ ਸੁਨੇਹਾ",
+        reminderAudioLabel: "ਯਾਦਦਿਹਾਨੀ ਆਡੀਓ",
+        footer: "ਉਧਾਰ ਵਾਇਸ · ਪ੍ਰੋਟੋਟਾਈਪ · ਯਾਦਦਿਹਾਨੀ ਬਣਾਉਣ ਤੋਂ ਪਹਿਲਾਂ ਸਾਰੀ ਕੱਢੀ ਗਈ ਜਾਣਕਾਰੀ ਦੀ ਸਮੀਖਿਆ ਕਰੋ।",
+        recordStatusIdle: "ਮਾਈਕ੍ਰੋਫ਼ੋਨ ਨਿਸ਼ਕਿਰਿਆ ਹੈ।",
+        extractStatusNone: "ਹਾਲੇ ਕੋਈ ਜਾਣਕਾਰੀ ਨਹੀਂ ਕੱਢੀ ਗਈ।",
+        ledgerStatusInitial: "ਗਾਹਕ ਦਾ ਨਾਮ ਅਤੇ ਰਕਮ ਭਰੋ, ਫਿਰ ਲੈਣ-ਦੇਣ ਸੇਵ ਕਰੋ।",
+        remindStatusInitial: "ਯਾਦਦਿਹਾਨੀ ਬਣਾਉਣ ਲਈ ਗਾਹਕ ਦੀ ਜਾਣਕਾਰੀ ਭਰੋ।",
+        recordingSaved: "ਰਿਕਾਰਡਿੰਗ ਸਥਾਨਕ ਤੌਰ 'ਤੇ ਸੇਵ ਹੋ ਗਈ ({size} KB)। ਪ੍ਰੋਸੈਸ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਤੁਸੀਂ ਇਸਨੂੰ ਸੁਣ ਸਕਦੇ ਹੋ।",
+        recordingLive: "ਰਿਕਾਰਡਿੰਗ ਹੋ ਰਹੀ ਹੈ… ਸਾਫ਼ ਬੋਲੋ, ਫਿਰ ਰਿਕਾਰਡਿੰਗ ਰੋਕੋ ਦਬਾਓ।",
+        micAccessError: "ਮਾਈਕ੍ਰੋਫ਼ੋਨ ਤੱਕ ਪਹੁੰਚ ਨਹੀਂ ਹੋ ਸਕੀ।{detail}",
+        enterSpeechFirst: "ਕਿਰਪਾ ਕਰਕੇ ਪਹਿਲਾਂ ਕੁਝ ਬੋਲੋ ਜਾਂ ਟ੍ਰਾਂਸਕ੍ਰਾਈਬ ਕਰੋ।",
+        extracting: "ਗਾਹਕ ਦਾ ਨਾਮ, ਰਕਮ ਅਤੇ ਦਿਨ ਕੱਢੇ ਜਾ ਰਹੇ ਹਨ…",
+        extractionPartial: "ਜੋ ਜਾਣਕਾਰੀ ਉਪਲਬਧ ਸੀ ਉਹ ਕੱਢ ਲਈ ਗਈ। ਕਿਰਪਾ ਕਰਕੇ ਇਹ ਭਰੋ: {fields}।",
+        extractionSuccess: "ਗਾਹਕ ਦੀ ਜਾਣਕਾਰੀ ਸਫਲਤਾਪੂਰਵਕ ਕੱਢੀ ਗਈ। ਯਾਦਦਿਹਾਨੀ ਬਣਾਉਣ ਤੋਂ ਪਹਿਲਾਂ ਖੇਤਰਾਂ ਦੀ ਸਮੀਖਿਆ ਜਾਂ ਸੋਧ ਕਰੋ।",
+        errExtractionFailed: "ਜਾਣਕਾਰੀ ਕੱਢਣ ਵਿੱਚ ਅਸਫਲਤਾ।",
+        uploadingTranscribing: "ਆਡੀਓ ਅੱਪਲੋਡ ਹੋ ਰਹੀ ਹੈ ਅਤੇ ਟ੍ਰਾਂਸਕ੍ਰਾਈਬ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ…",
+        transcriptionComplete: "ਟ੍ਰਾਂਸਕ੍ਰਿਪਸ਼ਨ ਪੂਰਾ ਹੋਇਆ{model}। ਜਾਣਕਾਰੀ ਕੱਢੀ ਜਾ ਰਹੀ ਹੈ…",
+        errTranscriptionFailed: "ਟ੍ਰਾਂਸਕ੍ਰਿਪਸ਼ਨ ਅਸਫਲ ਰਿਹਾ।",
+        enterNameAmount: "ਸੇਵ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਗਾਹਕ ਦਾ ਨਾਮ ਅਤੇ ਸਕਾਰਾਤਮਕ ਰਕਮ ਭਰੋ।",
+        savingLedger: "ਲੈਣ-ਦੇਣ Supabase ਵਿੱਚ ਸੇਵ ਹੋ ਰਿਹਾ ਹੈ…",
+        ledgerSaved: "{type} ₹{amount} ਸਫਲਤਾਪੂਰਵਕ ਸੇਵ ਹੋ ਗਿਆ।",
+        errSaveTransaction: "ਲੈਣ-ਦੇਣ ਸੇਵ ਨਹੀਂ ਹੋ ਸਕਿਆ।",
+        errLoadHistory: "ਇਤਿਹਾਸ ਲੋਡ ਨਹੀਂ ਹੋ ਸਕਿਆ।",
+        enterReminderDetails: "ਗਾਹਕ ਦਾ ਨਾਮ, ਸਕਾਰਾਤਮਕ ਰਕਮ ਅਤੇ ਬਕਾਇਆ ਦਿਨਾਂ ਦੀ ਸਹੀ ਗਿਣਤੀ ਭਰੋ।",
+        generatingReminder: "ਯਾਦਦਿਹਾਨੀ ਆਡੀਓ ਬਣਾਈ ਜਾ ਰਹੀ ਹੈ…",
+        reminderGenerated: "ਯਾਦਦਿਹਾਨੀ ਬਣ ਗਈ{voice}। ਸੁਣਨ ਲਈ ਪਲੇ ਦਬਾਓ।",
+        errReminderFailed: "ਯਾਦਦਿਹਾਨੀ ਨਹੀਂ ਬਣ ਸਕੀ।",
+        errorDetail: "ਗਲਤੀ: {detail}",
+        requestFailedHttp: "ਬੇਨਤੀ HTTP {status} ਨਾਲ ਅਸਫਲ ਰਹੀ",
+        unknownError: "ਅਣਜਾਣ ਗਲਤੀ।",
+        micUnavailable: "ਮਾਈਕ੍ਰੋਫ਼ੋਨ ਰਿਕਾਰਡਿੰਗ ਉਪਲਬਧ ਨਹੀਂ ਹੈ। ਇਹ ਪੇਜ localhost ਜਾਂ ਕਿਸੇ ਸਮਰਥਿਤ ਬ੍ਰਾਊਜ਼ਰ ਵਿੱਚ HTTPS ਉੱਤੇ ਖੋਲ੍ਹੋ।",
+        field_name: "ਗਾਹਕ ਦਾ ਨਾਮ",
+        field_amount: "ਰਕਮ",
+        field_days: "ਦਿਨ",
+        voiceLabel: "ਆਵਾਜ਼",
+        creditShort: "ਉਧਾਰ",
+        paymentShort: "ਭੁਗਤਾਨ",
+        newCustomerCreated: "ਨਵਾਂ ਗਾਹਕ ਬਣਾਇਆ ਗਿਆ",
+        existingCustomerUpdated: "ਮੌਜੂਦਾ ਗਾਹਕ ਅੱਪਡੇਟ ਕੀਤਾ ਗਿਆ",
+        historyEmpty: "ਕੋਈ ਲੈਣ-ਦੇਣ ਨਹੀਂ ਮਿਲਿਆ।",
+        defaultLedgerNote: "ਆਵਾਜ਼ ਨਾਲ ਦਰਜ ਲੈਣ-ਦੇਣ"
+      }
+    };
+
+    let uiLanguage = DEFAULT_UI_LANGUAGE;
+
+    function isSupportedUiLanguage(value) {
+      return SUPPORTED_UI_LANGUAGES.includes(value);
+    }
+
+    function t(key, params = {}) {
+      const dictionary = translations[uiLanguage] || translations[DEFAULT_UI_LANGUAGE];
+      let text = dictionary[key];
+
+      if (text === undefined) {
+        text = translations[DEFAULT_UI_LANGUAGE][key];
+      }
+
+      if (text === undefined) {
+        text = key;
+      }
+
+      return Object.entries(params).reduce(
+        (result, [name, value]) => result.split(`{${name}}`).join(String(value)),
+        text
+      );
+    }
+
+    function dateLocale() {
+      if (uiLanguage === "hi") return "hi-IN";
+      if (uiLanguage === "pa") return "pa-IN";
+      return "en-IN";
+    }
+
+    function setStatus(element, key, type = "", params = {}) {
+      element.dataset.statusKey = key;
+      element.dataset.statusParams = JSON.stringify(params);
+      element.className = "status" + (type ? " " + type : "");
+      element.textContent = t(key, params);
+    }
+
+    function setErrorStatus(element, error, fallbackKey) {
+      const detail = (error && error.message) ? error.message : t(fallbackKey);
+      setStatus(element, "errorDetail", "error", { detail });
+    }
+
+    function renderLedgerCustomer() {
+      const element = document.getElementById("customerLedgerName");
+
+      if (!element) return;
+
+      if (!currentCustomerName) {
+        element.textContent = "";
+        return;
+      }
+
+      const stateLabel = currentCustomerCreated
+        ? t("newCustomerCreated")
+        : t("existingCustomerUpdated");
+
+      element.textContent = `${currentCustomerName} · ${stateLabel}`;
+    }
+
+    function renderHistory() {
+      const list = document.getElementById("historyList");
+
+      if (!list) return;
+
+      list.innerHTML = "";
+
+      if (!currentTransactions.length) {
+        const item = document.createElement("li");
+        item.textContent = t("historyEmpty");
+        list.appendChild(item);
+        return;
+      }
+
+      currentTransactions.forEach(transaction => {
+        const item = document.createElement("li");
+        const kind = transaction.transaction_type === "credit"
+          ? t("creditShort")
+          : t("paymentShort");
+        const date = transaction.created_at
+          ? new Date(transaction.created_at).toLocaleString(dateLocale())
+          : "";
+
+        item.textContent = `${kind}: ₹${Number(transaction.amount).toFixed(2)}${date ? " · " + date : ""}${transaction.note ? " · " + transaction.note : ""}`;
+        list.appendChild(item);
+      });
+    }
+
+    function applyTranslations() {
+      document.documentElement.lang = uiLanguage;
+      document.title = t("pageTitle");
+
+      document.querySelectorAll("[data-i18n]").forEach(element => {
+        element.textContent = t(element.dataset.i18n);
+      });
+
+      document.querySelectorAll("[data-i18n-placeholder]").forEach(element => {
+        element.placeholder = t(element.dataset.i18nPlaceholder);
+      });
+
+      document.querySelectorAll("[data-i18n-aria-label]").forEach(element => {
+        element.setAttribute("aria-label", t(element.dataset.i18nAriaLabel));
+      });
+
+      document.querySelectorAll("[data-status-key]").forEach(element => {
+        let params = {};
+
+        try {
+          params = element.dataset.statusParams
+            ? JSON.parse(element.dataset.statusParams)
+            : {};
+        } catch {
+          params = {};
+        }
+
+        element.textContent = t(element.dataset.statusKey, params);
+      });
+
+      renderLedgerCustomer();
+      renderHistory();
+    }
+
+    function updateUiLanguage(nextLanguage) {
+      uiLanguage = isSupportedUiLanguage(nextLanguage)
+        ? nextLanguage
+        : DEFAULT_UI_LANGUAGE;
+
+      const selector = document.getElementById("uiLanguage");
+
+      if (selector) {
+        selector.value = uiLanguage;
+      }
+
+      try {
+        localStorage.setItem(UI_LANGUAGE_STORAGE_KEY, uiLanguage);
+      } catch {
+        // The interface still switches when localStorage is unavailable.
+      }
+
+      applyTranslations();
+    }
+
+    function initializeUiLanguage() {
+      let storedLanguage = null;
+
+      try {
+        storedLanguage = localStorage.getItem(UI_LANGUAGE_STORAGE_KEY);
+      } catch {
+        storedLanguage = null;
+      }
+
+      updateUiLanguage(
+        isSupportedUiLanguage(storedLanguage)
+          ? storedLanguage
+          : DEFAULT_UI_LANGUAGE
+      );
+    }
 
     const startBtn = document.getElementById("startBtn");
 
@@ -422,7 +891,15 @@
     const remindBtn = document.getElementById("remindBtn");
     const saveLedgerBtn = document.getElementById("saveLedgerBtn");
     const historyBtn = document.getElementById("historyBtn");
+    const uiLanguageSelect = document.getElementById("uiLanguage");
     let currentCustomerId = null;
+    let currentCustomerName = null;
+    let currentCustomerCreated = null;
+    let currentTransactions = [];
+
+    uiLanguageSelect.addEventListener("change", event => {
+      updateUiLanguage(event.target.value);
+    });
 
 
 
@@ -444,16 +921,6 @@
 
 
 
-    function setStatus(element, message, type = "") {
-
-      element.textContent = message;
-
-      element.className = "status" + (type ? " " + type : "");
-
-    }
-
-
-
     async function readError(response) {
 
       try {
@@ -466,7 +933,7 @@
 
       } catch {
 
-        return `Request failed with HTTP ${response.status}`;
+        return t("requestFailedHttp", { status: response.status });
 
       }
 
@@ -480,7 +947,7 @@
 
         if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
 
-          throw new Error("Microphone recording is unavailable. Open this page on localhost or HTTPS in a supported browser.");
+          throw new Error(t("micUnavailable"));
 
         }
 
@@ -532,7 +999,7 @@
 
           processBtn.disabled = recordedBlob.size === 0;
 
-          setStatus(recordStatus, `Recording saved locally (${(recordedBlob.size / 1024).toFixed(1)} KB). You can listen before processing.`, "success");
+          setStatus(recordStatus, "recordingSaved", "success", { size: (recordedBlob.size / 1024).toFixed(1) });
 
           if (stream) stream.getTracks().forEach(track => track.stop());
 
@@ -550,11 +1017,13 @@
 
         processBtn.disabled = true;
 
-        setStatus(recordStatus, "Recording… Speak clearly, then press Stop recording.", "live");
+        setStatus(recordStatus, "recordingLive", "live");
 
       } catch (error) {
 
-        setStatus(recordStatus, error.message || "Could not access the microphone.", "error");
+        setStatus(recordStatus, "micAccessError", "error", {
+          detail: error && error.message ? ` ${error.message}` : ""
+        });
 
       }
 
@@ -614,10 +1083,15 @@
       document.getElementById("ledgerNote").value = "";
       document.querySelector('input[name="transactionType"][value="credit"]').checked = true;
       currentCustomerId = null;
+      currentCustomerName = null;
+      currentCustomerCreated = null;
+      currentTransactions = [];
+      document.getElementById("customerLedgerName").textContent = "";
+      document.getElementById("historyList").innerHTML = "";
       document.getElementById("balanceResult").classList.add("hidden");
       document.getElementById("historyResult").classList.add("hidden");
       historyBtn.disabled = true;
-      setStatus(document.getElementById("ledgerStatus"), "Extract the customer name and amount, then save the transaction.");
+      setStatus(document.getElementById("ledgerStatus"), "ledgerStatusInitial");
 
       document.getElementById("reminderResult").classList.add("hidden");
 
@@ -635,11 +1109,11 @@
 
       extractBtn.disabled = true;
 
-      setStatus(recordStatus, "Microphone is idle.");
+      setStatus(recordStatus, "recordStatusIdle");
 
-      setStatus(extractStatus, "No details extracted yet.");
+      setStatus(extractStatus, "extractStatusNone");
 
-      setStatus(remindStatus, "Fill in the customer details to generate a reminder.");
+      setStatus(remindStatus, "remindStatusInitial");
 
     });
 
@@ -649,7 +1123,7 @@
 
       if (!transcript.trim()) {
 
-        setStatus(extractStatus, "Please enter or transcribe some speech first.", "error");
+        setStatus(extractStatus, "enterSpeechFirst", "error");
 
         return;
 
@@ -659,7 +1133,7 @@
 
       extractBtn.disabled = true;
 
-      setStatus(extractStatus, "Extracting customer name, amount and days…", "live");
+      setStatus(extractStatus, "extracting", "live");
 
       try {
 
@@ -692,17 +1166,23 @@
 
         const missing = Array.isArray(data.missing_fields) ? data.missing_fields : [];
 
-        const message = missing.length
+        const missingLabels = missing.map(field => t(`field_${field}`));
 
-          ? `Extracted what was available. Please fill in: ${missing.join(", ")}.`
+        if (missing.length) {
 
-          : "Customer details extracted successfully. Review or edit the fields before generating the reminder.";
+          setStatus(extractStatus, "extractionPartial", "", {
+            fields: missingLabels.join(", ")
+          });
 
-        setStatus(extractStatus, message, missing.length ? "" : "success");
+        } else {
+
+          setStatus(extractStatus, "extractionSuccess", "success");
+
+        }
 
       } catch (error) {
 
-        setStatus(extractStatus, error.message || "Extraction failed.", "error");
+        setErrorStatus(extractStatus, error, "errExtractionFailed");
 
       } finally {
 
@@ -722,7 +1202,7 @@
 
       extractBtn.disabled = true;
 
-      setStatus(recordStatus, "Uploading audio and transcribing…", "live");
+      setStatus(recordStatus, "uploadingTranscribing", "live");
 
 
 
@@ -752,7 +1232,7 @@
 
         const data = await response.json();
 
-        if (!data.success) throw new Error(data.error || "Transcription was not successful.");
+        if (!data.success) throw new Error(t("errTranscriptionFailed"));
 
 
 
@@ -760,7 +1240,9 @@
 
         document.getElementById("transcript").value = transcript;
 
-        setStatus(recordStatus, `Transcription complete${data.model ? ` · ${data.model}` : ""}. Extracting details…`, "success");
+        setStatus(recordStatus, "transcriptionComplete", "success", {
+          model: data.model ? ` · ${data.model}` : ""
+        });
 
         extractBtn.disabled = false;
 
@@ -768,7 +1250,7 @@
 
       } catch (error) {
 
-        setStatus(recordStatus, error.message || "Transcription failed.", "error");
+        setErrorStatus(recordStatus, error, "errTranscriptionFailed");
 
       } finally {
 
@@ -798,22 +1280,13 @@
     async function loadTransactionHistory(customerId) {
       const response = await fetch(`${API_BASE}/transactions/${encodeURIComponent(customerId)}/history`);
       if (!response.ok) throw new Error(await readError(response));
-      const transactions = await response.json();
-      const list = document.getElementById("historyList");
-      list.innerHTML = "";
-      if (!Array.isArray(transactions) || transactions.length === 0) {
-        const item = document.createElement("li");
-        item.textContent = "No transactions found.";
-        list.appendChild(item);
-      } else {
-        transactions.forEach(transaction => {
-          const item = document.createElement("li");
-          const kind = transaction.transaction_type === "credit" ? "Credit" : "Payment";
-          const date = transaction.created_at ? new Date(transaction.created_at).toLocaleString() : "";
-          item.textContent = `${kind}: ₹${Number(transaction.amount).toFixed(2)}${date ? " · " + date : ""}${transaction.note ? " · " + transaction.note : ""}`;
-          list.appendChild(item);
-        });
-      }
+      const payload = await response.json();
+
+      currentTransactions = Array.isArray(payload)
+        ? payload
+        : (Array.isArray(payload.transactions) ? payload.transactions : []);
+
+      renderHistory();
       document.getElementById("historyResult").classList.remove("hidden");
     }
 
@@ -823,17 +1296,17 @@
       const transactionType = selectedTransactionType();
       const preferredLanguage = document.getElementById("language").value;
       const description = document.getElementById("ledgerNote").value.trim()
-        || "Voice recorded transaction";
+        || t("defaultLedgerNote");
 
       if (!name || !Number.isFinite(amount) || amount <= 0) {
         setStatus(document.getElementById("ledgerStatus"),
-          "Enter a customer name and a positive amount before saving.", "error");
+          "enterNameAmount", "error");
         return;
       }
 
       saveLedgerBtn.disabled = true;
       historyBtn.disabled = true;
-      setStatus(document.getElementById("ledgerStatus"), "Saving transaction to Supabase…", "live");
+      setStatus(document.getElementById("ledgerStatus"), "savingLedger", "live");
       try {
         const response = await fetch(`${API_BASE}/ledger/from-voice`, {
           method: "POST",
@@ -848,22 +1321,23 @@
         });
         if (!response.ok) throw new Error(await readError(response));
         const data = await response.json();
-        if (!data.success) throw new Error(data.message || "Ledger save failed.");
+        if (!data.success) throw new Error(t("errSaveTransaction"));
 
         currentCustomerId = data.customer_id;
+        currentCustomerName = data.customer_name;
+        currentCustomerCreated = Boolean(data.customer_created);
         document.getElementById("balanceAmount").textContent =
           `₹${Number(data.outstanding_balance).toFixed(2)}`;
-        document.getElementById("customerLedgerName").textContent =
-          `${data.customer_name} · ${data.customer_created ? "New customer created" : "Existing customer updated"}`;
+        renderLedgerCustomer();
         document.getElementById("balanceResult").classList.remove("hidden");
-        setStatus(document.getElementById("ledgerStatus"),
-          `${transactionType === "credit" ? "Credit" : "Payment"} of ₹${Number(data.amount).toFixed(2)} saved successfully.`,
-          "success");
+        setStatus(document.getElementById("ledgerStatus"), "ledgerSaved", "success", {
+          type: transactionType === "credit" ? t("creditShort") : t("paymentShort"),
+          amount: Number(data.amount).toFixed(2)
+        });
         historyBtn.disabled = false;
         await loadTransactionHistory(currentCustomerId);
       } catch (error) {
-        setStatus(document.getElementById("ledgerStatus"),
-          error.message || "Could not save transaction.", "error");
+        setErrorStatus(document.getElementById("ledgerStatus"), error, "errSaveTransaction");
       } finally {
         saveLedgerBtn.disabled = false;
       }
@@ -875,7 +1349,7 @@
       try {
         await loadTransactionHistory(currentCustomerId);
       } catch (error) {
-        setStatus(document.getElementById("ledgerStatus"), error.message || "Could not load history.", "error");
+        setErrorStatus(document.getElementById("ledgerStatus"), error, "errLoadHistory");
       } finally {
         historyBtn.disabled = false;
       }
@@ -895,7 +1369,7 @@
 
       if (!name || !Number.isFinite(amount) || amount <= 0 || !Number.isInteger(days) || days < 0) {
 
-        setStatus(remindStatus, "Enter a customer name, a positive amount, and a valid number of pending days.", "error");
+        setStatus(remindStatus, "enterReminderDetails", "error");
 
         return;
 
@@ -905,7 +1379,7 @@
 
       remindBtn.disabled = true;
 
-      setStatus(remindStatus, "Generating reminder audio…", "live");
+      setStatus(remindStatus, "generatingReminder", "live");
 
       document.getElementById("reminderResult").classList.add("hidden");
 
@@ -929,7 +1403,7 @@
 
         const data = await response.json();
 
-        if (!data.success) throw new Error(data.error || "Reminder generation failed.");
+        if (!data.success) throw new Error(t("errReminderFailed"));
 
 
 
@@ -949,13 +1423,17 @@
 
 
 
-        const voiceInfo = data.voice ? ` · Voice: ${data.voice}` : "";
+        const voiceInfo = data.voice
+          ? ` · ${t("voiceLabel")}: ${data.voice}`
+          : "";
 
-        setStatus(remindStatus, `Reminder generated${voiceInfo}. Press Play to listen.`, "success");
+        setStatus(remindStatus, "reminderGenerated", "success", {
+          voice: voiceInfo
+        });
 
       } catch (error) {
 
-        setStatus(remindStatus, error.message || "Could not generate reminder.", "error");
+        setErrorStatus(remindStatus, error, "errReminderFailed");
 
       } finally {
 
@@ -964,6 +1442,8 @@
       }
 
     });
+
+    initializeUiLanguage();
 
   </script>
 
