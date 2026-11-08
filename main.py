@@ -14,8 +14,8 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 from routes.customers import router as customers_router
 from number_utils import HINDI_NUMBERS, ROMAN_NUMBERS, hindi_to_number
-
-
+from routes.transactions import router as transactions_router
+from routes.voice_ledger import router as voice_ledger_router
 # ==================================================
 # CONFIGURATION
 # ==================================================
@@ -41,6 +41,8 @@ AUDIO_DIR.mkdir(exist_ok=True)
 
 app = FastAPI(title="Udhaar Voice API")
 app.include_router(customers_router)
+app.include_router(transactions_router)
+app.include_router(voice_ledger_router)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -202,6 +204,125 @@ DAY_WORDS = {
     "दिन", "दिनों", "day", "days", "din",
 }
 
+# ==================================================
+# TRANSACTION TYPE DETECTION
+# ==================================================
+
+# ==================================================
+# MULTILINGUAL TRANSACTION TYPE DETECTION
+# Hindi, English, Hinglish, Punjabi, Gujarati
+# ==================================================
+
+def detect_transaction_type(text: str) -> dict:
+    """
+    Returns:
+    {
+        "transaction_type": "credit" / "payment" / "unknown",
+        "confidence": 0.95 / 0.0
+    }
+    """
+
+    text = text.lower().strip()
+
+    # Normalize punctuation and whitespace.
+    text = re.sub(r"[^\w\s\u0900-\u0dff]", " ", text)
+    text = re.sub(r"\s+", " ", text).strip()
+
+    padded_text = f" {text} "
+
+    # --------------------------------------------------
+    # PAYMENT KEYWORDS — CHECK FIRST
+    # --------------------------------------------------
+
+    PAYMENT_KEYWORDS = [
+        # Hindi
+        "वापस",
+        "दिया",
+        "दिए",
+        "चुका दिया",
+        "चुका दिए",
+        "भर दिया",
+        "भर दिए",
+
+        # English
+        "paid",
+        "settled",
+        "returned",
+        "cleared",
+        "payment",
+
+        # Hinglish
+        "wapas",
+        "diya",
+        "de diya",
+        "de diye",
+        "clear kiya",
+        "chuka diya",
+
+        # Punjabi
+        "ਵਾਪਸ",
+        "ਦਿੱਤਾ",
+        "ਚੁਕਾਇਆ",
+
+        # Gujarati
+        "પરત",
+        "આપ્યા",
+        "ચૂકવ્યા",
+    ]
+
+    # --------------------------------------------------
+    # CREDIT KEYWORDS
+    # --------------------------------------------------
+
+    CREDIT_KEYWORDS = [
+        # Hindi
+        "उधार",
+        "उधार लिया",
+        "बाकी",
+        "लिया",
+
+        # English
+        "credit",
+        "owed",
+        "borrowed",
+        "pending",
+        "dues",
+
+        # Hinglish
+        "udhaar",
+        "liya",
+        "baki",
+
+        # Punjabi
+        "ਉਧਾਰ",
+        "ਲਿਆ",
+        "ਬਾਕੀ",
+
+        # Gujarati
+        "ઉધાર",
+        "લીધા",
+        "બાકી",
+    ]
+
+    # Payment takes priority over credit.
+    for phrase in PAYMENT_KEYWORDS:
+        if f" {phrase} " in padded_text:
+            return {
+                "transaction_type": "payment",
+                "confidence": 0.95
+            }
+
+    for phrase in CREDIT_KEYWORDS:
+        if f" {phrase} " in padded_text:
+            return {
+                "transaction_type": "credit",
+                "confidence": 0.95
+            }
+
+    return {
+        "transaction_type": "unknown",
+        "confidence": 0.0
+    }
 
 def tokenize_hindi(text: str) -> list:
     """Normalize punctuation and split transcript into tokens."""
@@ -272,8 +393,8 @@ def extract_number_before(tokens: list, keyword_index: int):
 
 def extract_ledger_details(transcript: str) -> dict:
 
-    tokens = tokenize_hindi(transcript)
-    cleaned = transcript.strip()
+    cleaned = transcript.lower().strip()
+    tokens = tokenize_hindi(cleaned)
 
     name = None
     amount = None
@@ -439,8 +560,12 @@ def extract_ledger_details(transcript: str) -> dict:
         if value is None
     ]
 
+    transaction_detection = detect_transaction_type(cleaned)
+
     return {
         **values,
+        "transaction_type": transaction_detection["transaction_type"],
+        "confidence": transaction_detection["confidence"],
         "missing_fields": missing_fields,
     }
 
