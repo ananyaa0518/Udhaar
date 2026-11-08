@@ -149,15 +149,6 @@ Visit `http://localhost:5500/test_recorder.html` and allow microphone access.
 | POST | `/transactions/payment` | Record payment |
 | GET | `/transactions/{customer_id}/history` | View transaction history |
 
-## Demo
-
-1. Record: "Ramesh ne 500 rupaye udhaar liye."
-2. Review and save the ₹500 credit.
-3. Record: "Ramesh ne 200 rupaye wapas diye."
-4. Save the payment.
-5. Show the updated outstanding balance: **₹300**.
-6. Generate and play a voice reminder.
-
 ## What's Next
 
 - Automated voice-call reminders.
