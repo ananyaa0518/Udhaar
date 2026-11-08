@@ -6,8 +6,6 @@ Udhaar Voice helps shopkeepers record customer credit and payments using voice i
 
 Speak a transaction, review the extracted details, and save it to a digital ledger. You can also generate payment reminders in Indian languages.
 
-Built using **Gnani AI Prisma and Timbre** for the Great Indian AI Internship Challenge 2026.
-
 ## The Problem
 
 Many small shopkeepers still manage udhaar through notebooks. Tracking payments, calculating balances and reminding customers manually can be difficult.
@@ -56,28 +54,6 @@ Language support and accuracy may vary, and further testing is needed across dif
 | Text-to-Speech | Gnani AI Timbre |
 | Database | Supabase (PostgreSQL) |
 | Audio Processing | FFmpeg |
-
-## Project Structure
-
-```text
-Udhaar/
-├── main.py
-├── config.py
-├── routes/
-│   ├── customers.py
-│   ├── transactions.py
-│   └── voice_ledger.py
-├── services/
-│   └── ledger_service.py
-├── schemas/
-│   ├── transaction.py
-│   └── voice_ledger.py
-├── database/
-│   └── supabase_client.py
-├── test_recorder.html
-├── requirements.txt
-└── .env
-```
 
 ## Getting Started
 
