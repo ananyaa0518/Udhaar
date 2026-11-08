@@ -10,6 +10,7 @@ class TransactionCreate(BaseModel):
     customer_id: UUID
     amount: Decimal = Field(gt=0, max_digits=12, decimal_places=2)
     note: Optional[str] = Field(default=None, max_length=500)
+    idempotency_key: Optional[str] = Field(default=None, min_length=1, max_length=200)
 
 
 class TransactionResponse(BaseModel):

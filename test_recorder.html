@@ -13,29 +13,19 @@
   <style>
 
     :root {
-
-      --bg: #f5f7fb;
-
-      --card: #ffffff;
-
-      --ink: #172033;
-
-      --muted: #667085;
-
-      --line: #e5e9f2;
-
-      --primary: #3157d5;
-
-      --primary-dark: #2444b2;
-
-      --green: #16845b;
-
-      --red: #c0392b;
-
-      --soft-blue: #eef2ff;
-
+      --bg: #f5f0e8;
+      --card: rgba(255, 252, 246, .97);
+      --ink: #2f261d;
+      --muted: #756759;
+      --line: #dfd1bd;
+      --primary: #9a6517;
+      --primary-dark: #70470d;
+      --green: #2f7355;
+      --red: #a84a3b;
+      --amber: #b47a1d;
+      --soft-blue: #f3e7cf;
       --radius: 18px;
-
+      --shadow: 0 16px 42px rgba(83, 55, 22, .10);
     }
 
     * { box-sizing: border-box; }
@@ -44,9 +34,8 @@
 
       margin: 0;
 
-      padding: 32px 16px 56px;
-
-      background: var(--bg);
+      padding: 24px 16px 56px;
+      background: radial-gradient(circle at top right, #ead7b7 0, transparent 34rem), var(--bg);
 
       color: var(--ink);
 
@@ -54,11 +43,13 @@
 
     }
 
-    .page { max-width: 760px; margin: 0 auto; }
+    .page { width: 100%; max-width: 1160px; margin-inline: auto; }
 
-    header { margin-bottom: 24px; }
+    header { margin-bottom: 22px; padding: 18px 4px 4px; }
 
     .header-top {
+      width: 100%;
+      min-width: 0;
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
@@ -88,15 +79,9 @@
       font-weight: 600;
     }
 
-    .eyebrow {
+    .eyebrow { color: var(--primary); font-size: 12px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
 
-      color: var(--primary); font-size: 12px; font-weight: 800;
-
-      letter-spacing: .12em; text-transform: uppercase;
-
-    }
-
-    h1 { margin: 8px 0 6px; font-size: clamp(28px, 5vw, 38px); letter-spacing: -.04em; }
+    h1 { margin: 8px 0 6px; font-size: clamp(30px, 5vw, 46px); letter-spacing: -.05em; }
 
     .subtitle { color: var(--muted); margin: 0; line-height: 1.55; }
 
@@ -104,9 +89,8 @@
 
       background: var(--card); border: 1px solid var(--line);
 
-      border-radius: var(--radius); padding: 22px; margin: 16px 0;
-
-      box-shadow: 0 8px 28px rgba(20, 35, 75, .045);
+      border-radius: var(--radius); padding: 24px; margin: 16px 0;
+      box-shadow: var(--shadow);
 
     }
 
@@ -122,7 +106,7 @@
 
     }
 
-    h2 { margin: 0; font-size: 18px; }
+    h2 { margin: 0; font-size: 19px; letter-spacing: -.02em; }
 
     .hint { color: var(--muted); font-size: 13px; line-height: 1.5; margin: 8px 0 0; }
 
@@ -131,50 +115,36 @@
     button {
 
       border: 0; border-radius: 11px; padding: 12px 17px; font-size: 14px;
-
-      font-weight: 700; cursor: pointer; transition: .15s ease;
+      font-weight: 700; cursor: pointer; transition: transform .15s ease, background .15s ease, box-shadow .15s ease;
 
     }
 
-    button:disabled { opacity: .45; cursor: not-allowed; }
+    button:hover:not(:disabled) { transform: translateY(-1px); }
+    button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid rgba(49,87,213,.25); outline-offset: 2px; }
+    button:disabled { opacity: .45; cursor: not-allowed; transform: none; }
 
     .primary { background: var(--primary); color: white; }
 
     .primary:hover:not(:disabled) { background: var(--primary-dark); }
 
-    .secondary { background: #edf0f6; color: var(--ink); }
+    .secondary { background: #eee3d2; color: var(--ink); }
+    .secondary:hover:not(:disabled) { background: #e3d2b9; }
 
     .danger { background: #fff0ee; color: var(--red); }
 
-    .status {
+    .status { margin-top: 14px; padding: 12px 14px; border-radius: 12px; background: #f2f4f8; color: var(--muted); font-size: 13px; line-height: 1.5; }
 
-      margin-top: 14px; padding: 11px 13px; border-radius: 10px;
-
-      background: #f2f4f8; color: var(--muted); font-size: 13px; line-height: 1.5;
-
-    }
-
-    .status.success { background: #eaf8f1; color: #126b49; }
-
-    .status.error { background: #fff0ee; color: #a52e24; }
-
-    .status.live { background: #fff5e8; color: #94520a; }
+    .status.success { background: #e5f1e9; color: #245c43; }
+    .status.error { background: #fbe9e5; color: #87392e; }
+    .status.live { background: #fff2d8; color: #80530d; }
 
     .audio-preview { width: 100%; margin-top: 14px; }
 
     label { display: block; font-size: 13px; font-weight: 700; margin: 14px 0 7px; }
 
-    input, select, textarea {
+    input, select, textarea { width: 100%; border: 1px solid #d8deea; border-radius: 10px; padding: 12px 13px; font: inherit; color: var(--ink); background: white; outline: none; transition: border-color .15s ease, box-shadow .15s ease; }
 
-      width: 100%; border: 1px solid #d8deea; border-radius: 10px;
-
-      padding: 12px 13px; font: inherit; color: var(--ink); background: white;
-
-      outline: none;
-
-    }
-
-    input:focus, select:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(49,87,213,.10); }
+    input:focus, select:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(154,101,23,.16); }
 
     textarea { min-height: 88px; resize: vertical; }
 
@@ -198,11 +168,48 @@
     .transaction-type { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 8px; }
     .transaction-type label { display: inline-flex; align-items: center; gap: 7px; margin: 0; font-weight: 600; }
     .transaction-type input { width: auto; }
-    .balance-card { margin-top: 14px; padding: 16px; border-radius: 12px; background: #eaf8f1; color: #126b49; }
+    .balance-card { margin-top: 14px; padding: 16px; border-radius: 12px; background: #e5f1e9; color: #245c43; }
     .balance-card .amount { font-size: 28px; font-weight: 800; margin-top: 4px; }
     .history-list { margin: 12px 0 0; padding-left: 20px; color: var(--muted); font-size: 13px; line-height: 1.8; }
+    .customer-matches { margin-top: 14px; display: grid; gap: 8px; }
+    .customer-match { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; }
+    .customer-match small { color: var(--muted); }
 
     .hidden { display: none; }
+    body.initializing { overflow: hidden; }
+    .app-content { width: 100%; }
+    .initializing .app-content { visibility: hidden; }
+    .auth-loading {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: var(--bg);
+      color: var(--muted);
+      font-weight: 700;
+    }
+    body:not(.initializing) .auth-loading { display: none; }
+    .auth-panel { border: 2px solid var(--soft-blue); }
+    .dashboard-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .summary-card { padding: 16px; border: 1px solid #e4d3b2; border-radius: 14px; background: linear-gradient(145deg, #fbf1df, #fffdf9); }
+    .summary-card strong { display: block; color: var(--muted); font-size: 12px; }
+    .summary-card .summary-value { font-size: 23px; font-weight: 800; margin-top: 5px; }
+    .customer-table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 13px; }
+    .customer-table th, .customer-table td { text-align: left; padding: 10px 7px; border-bottom: 1px solid var(--line); }
+    .customer-table th { color: var(--muted); }
+    .positive { color: var(--green); font-weight: 700; }
+    .auth-actions { display: flex; gap: 10px; align-items: end; flex-wrap: wrap; }
+    .auth-panel { max-width: 780px; margin-left: auto; margin-right: auto; }
+    .merchant-identity { margin: -4px 0 16px; color: var(--muted); font-size: 13px; }
+    .requires-auth { animation: rise .2s ease-out; }
+    .customer-table { overflow: hidden; border: 1px solid var(--line); border-radius: 12px; }
+    .customer-table th { background: #f8f0e3; }
+    .customer-match { background: #fff; }
+    .history-list { list-style: none; padding-left: 0; }
+    .history-list li { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+    @keyframes rise { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
     .footer { text-align: center; color: var(--muted); font-size: 12px; margin-top: 22px; }
 
@@ -219,22 +226,35 @@
       .controls button { flex: 1; }
 
       .ui-language { width: 100%; }
+      .dashboard-grid { grid-template-columns: repeat(2, 1fr); }
+      .customer-table { display: block; overflow-x: auto; white-space: nowrap; }
+      .history-list li { align-items: flex-start; flex-direction: column; }
 
+    }
+
+    @media (max-width: 420px) {
+      .dashboard-grid { grid-template-columns: 1fr; }
+      .card { padding: 16px; }
+      .auth-actions button, .controls button { width: 100%; }
     }
 
   </style>
 
 </head>
 
-<body>
+<body class="initializing">
 
-  <main class="page">
+  <div class="auth-loading" role="status" aria-live="polite">
+    <span data-i18n="checkingSession">Checking your secure session…</span>
+  </div>
+
+  <main id="appContent" class="page app-content">
 
     <header>
 
       <div class="header-top">
 
-        <div>
+        <div class="hero-copy">
 
           <div class="eyebrow" data-i18n="eyebrow">Voice-first digital khata</div>
 
@@ -263,6 +283,35 @@
       </div>
 
     </header>
+
+    <section id="authPanel" class="card auth-panel">
+      <div class="step"><span class="step-number">0</span><h2 data-i18n="dashboardAuthHeading">Merchant account</h2></div>
+      <div id="merchantIdentity" class="merchant-identity hidden"></div>
+      <div class="grid">
+        <div><label for="authEmail" data-i18n="email">Email</label><input id="authEmail" type="email" autocomplete="email" /></div>
+        <div><label for="authPassword" data-i18n="password">Password</label><input id="authPassword" type="password" autocomplete="current-password" /></div>
+      </div>
+      <div class="auth-actions">
+        <button id="loginBtn" class="primary" data-i18n="login">Log in</button>
+        <button id="signupBtn" class="secondary" data-i18n="signup">Sign up</button>
+        <button id="logoutBtn" class="secondary hidden" data-i18n="logout">Log out</button>
+      </div>
+      <div id="authStatus" class="status" data-i18n="authRequired">Please log in to continue.</div>
+    </section>
+
+    <section id="dashboardPanel" class="card requires-auth hidden">
+      <div class="step"><span class="step-number">1</span><h2 data-i18n="dashboard">Dashboard</h2></div>
+      <div class="dashboard-grid">
+        <div class="summary-card"><strong data-i18n="totalOutstanding">Total outstanding</strong><div id="summaryOutstanding" class="summary-value">₹0.00</div></div>
+        <div class="summary-card"><strong data-i18n="paymentsReceived">Payments received</strong><div id="summaryPayments" class="summary-value">₹0.00</div></div>
+        <div class="summary-card"><strong data-i18n="totalCustomers">Total customers</strong><div id="summaryCustomers" class="summary-value">0</div></div>
+        <div class="summary-card"><strong data-i18n="pendingCustomers">Customers with pending dues</strong><div id="summaryPending" class="summary-value">0</div></div>
+      </div>
+      <label for="dashboardSearch" data-i18n="searchCustomers">Search customers</label>
+      <input id="dashboardSearch" type="search" data-i18n-placeholder="searchCustomers" placeholder="Search customers" />
+      <label><input id="dashboardPendingOnly" type="checkbox" /> <span data-i18n="pendingOnly">Pending only</span></label>
+      <div id="customerDirectory"></div>
+    </section>
 
 
 
@@ -350,6 +399,14 @@
 
         <div>
 
+          <label for="customerPhone" data-i18n="customerPhone">Customer phone (optional)</label>
+
+          <input id="customerPhone" type="tel" placeholder="e.g. +91 98765 43210" />
+
+        </div>
+
+        <div>
+
           <label for="amount" data-i18n="amount">Amount (₹)</label>
 
           <input id="amount" type="number" min="1" step="1" data-i18n-placeholder="amountPlaceholder" placeholder="e.g. 450" />
@@ -365,6 +422,8 @@
         </div>
 
       </div>
+
+      <div id="customerMatches" class="customer-matches" aria-live="polite"></div>
 
       <div id="extractStatus" class="status" data-status-key="extractStatusNone">No details extracted yet.</div>
 
@@ -429,8 +488,6 @@
 
       </select>
 
-      <p class="hint" data-i18n="reminderHint">Prisma transcription accepts all 10 listed languages. Automatic customer-name, amount, and days extraction is currently Hindi-focused; for other languages, review the transcript and enter or correct the fields manually. The reminder can be generated in all 10 languages.</p>
-
       <div class="controls">
 
         <button id="remindBtn" class="primary" data-i18n="remindBtn">Generate reminder audio</button>
@@ -459,9 +516,45 @@
 
 
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="frontend-config.js"></script>
+  <script
+    src="frontend-config.local.js"
+    onerror="console.warn('[Udhaar Voice] frontend-config.local.js was not found; using the safe example configuration.')"
+  ></script>
   <script>
 
     const API_BASE = "http://127.0.0.1:8000";
+    const supabaseConfig = {
+      url: (window.UDHAAR_SUPABASE_URL || "").trim(),
+      publishableKey: (window.UDHAAR_SUPABASE_PUBLISHABLE_KEY || "").trim()
+    };
+    const hasValidSupabaseConfig = Boolean(
+      window.supabase
+      && /^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(supabaseConfig.url)
+      && supabaseConfig.publishableKey
+      && !supabaseConfig.publishableKey.includes("YOUR_")
+      && !supabaseConfig.publishableKey.includes("SUPABASE_")
+    );
+    if (!window.supabase) {
+      console.error("[Udhaar Voice] Supabase client library did not load.");
+    } else if (!hasValidSupabaseConfig) {
+      console.error(
+        "[Udhaar Voice] Invalid Supabase frontend configuration.",
+        "Expected a real https://<project>.supabase.co URL and publishable/anon key.",
+        {
+          urlLoaded: Boolean(supabaseConfig.url),
+          urlFormatValid: /^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(supabaseConfig.url),
+          publishableKeyLoaded: Boolean(supabaseConfig.publishableKey)
+        }
+      );
+    }
+    const authClient = hasValidSupabaseConfig
+      ? window.supabase.createClient(supabaseConfig.url, supabaseConfig.publishableKey)
+      : null;
+    let authSession = null;
+    let dashboardCustomers = [];
+    let localeExtras = {};
 
     const SUPPORTED_UI_LANGUAGES = ["en", "hi", "pa"];
     const UI_LANGUAGE_STORAGE_KEY = "udhaar.uiLanguage";
@@ -470,6 +563,7 @@
     const translations = {
       en: {
         pageTitle: "Udhaar Voice — Recorder",
+        checkingSession: "Checking your secure session…",
         eyebrow: "Voice-first digital khata",
         appTitle: "Udhaar Voice",
         subtitle: "Record a customer's udhaar details in Hindi, review the extracted information, then create a payment reminder in the customer's preferred language.",
@@ -507,7 +601,6 @@
         transactionHistoryLabel: "TRANSACTION HISTORY",
         reminderHeading: "Generate a multilingual reminder",
         reminderLanguageLabel: "Customer's preferred reminder language",
-        reminderHint: "Prisma transcription accepts all 10 listed languages. Automatic customer-name, amount, and days extraction is currently Hindi-focused; for other languages, review the transcript and enter or correct the fields manually. The reminder can be generated in all 10 languages.",
         remindBtn: "Generate reminder audio",
         reminderMessageLabel: "REMINDER MESSAGE",
         reminderAudioLabel: "Reminder audio",
@@ -515,6 +608,8 @@
         recordStatusIdle: "Microphone is idle.",
         extractStatusNone: "No details extracted yet.",
         ledgerStatusInitial: "Extract the customer name and amount, then save the transaction.",
+        customerSelected: "Existing customer selected. Review the details, then save.",
+        newCustomerSelected: "A new customer will be created after you save.",
         remindStatusInitial: "Fill in the customer details to generate a reminder.",
         recordingSaved: "Recording saved locally ({size} KB). You can listen before processing.",
         recordingLive: "Recording… Speak clearly, then press Stop recording.",
@@ -554,6 +649,7 @@
 
       hi: {
         pageTitle: "उधार वॉइस — रिकॉर्डर",
+        checkingSession: "आपका सुरक्षित सत्र जाँचा जा रहा है…",
         eyebrow: "आवाज़-आधारित डिजिटल खाता",
         appTitle: "उधार वॉइस",
         subtitle: "ग्राहक के उधार की जानकारी हिंदी में रिकॉर्ड करें, निकाली गई जानकारी की समीक्षा करें, और ग्राहक की पसंदीदा भाषा में भुगतान अनुस्मारक बनाएँ।",
@@ -591,7 +687,6 @@
         transactionHistoryLabel: "लेन-देन का इतिहास",
         reminderHeading: "बहुभाषी अनुस्मारक बनाएँ",
         reminderLanguageLabel: "ग्राहक की पसंदीदा अनुस्मारक भाषा",
-        reminderHint: "Prisma ट्रांसक्रिप्शन सभी 10 सूचीबद्ध भाषाओं को स्वीकार करता है। ग्राहक का नाम, राशि और दिनों की स्वचालित पहचान अभी हिंदी पर केंद्रित है; अन्य भाषाओं के लिए ट्रांसक्रिप्ट की समीक्षा करें और फ़ील्ड मैन्युअल रूप से भरें या सुधारें। अनुस्मारक सभी 10 भाषाओं में बनाया जा सकता है।",
         remindBtn: "अनुस्मारक ऑडियो बनाएँ",
         reminderMessageLabel: "अनुस्मारक संदेश",
         reminderAudioLabel: "अनुस्मारक ऑडियो",
@@ -638,6 +733,7 @@
 
       pa: {
         pageTitle: "ਉਧਾਰ ਵਾਇਸ — ਰਿਕਾਰਡਰ",
+        checkingSession: "ਤੁਹਾਡਾ ਸੁਰੱਖਿਅਤ ਸੈਸ਼ਨ ਜਾਂਚਿਆ ਜਾ ਰਿਹਾ ਹੈ…",
         eyebrow: "ਆਵਾਜ਼-ਆਧਾਰਿਤ ਡਿਜੀਟਲ ਖਾਤਾ",
         appTitle: "ਉਧਾਰ ਵਾਇਸ",
         subtitle: "ਗਾਹਕ ਦੀ ਉਧਾਰ ਜਾਣਕਾਰੀ ਪੰਜਾਬੀ ਵਿੱਚ ਰਿਕਾਰਡ ਕਰੋ, ਕੱਢੀ ਗਈ ਜਾਣਕਾਰੀ ਦੀ ਸਮੀਖਿਆ ਕਰੋ, ਅਤੇ ਗਾਹਕ ਦੀ ਪਸੰਦੀਦਾ ਭਾਸ਼ਾ ਵਿੱਚ ਭੁਗਤਾਨ ਯਾਦਦਿਹਾਨੀ ਬਣਾਓ।",
@@ -675,7 +771,6 @@
         transactionHistoryLabel: "ਲੈਣ-ਦੇਣ ਦਾ ਇਤਿਹਾਸ",
         reminderHeading: "ਬਹੁ-ਭਾਸ਼ਾਈ ਯਾਦਦਿਹਾਨੀ ਬਣਾਓ",
         reminderLanguageLabel: "ਗਾਹਕ ਦੀ ਪਸੰਦੀਦਾ ਯਾਦਦਿਹਾਨੀ ਭਾਸ਼ਾ",
-        reminderHint: "Prisma ਟ੍ਰਾਂਸਕ੍ਰਿਪਸ਼ਨ ਸਾਰੀਆਂ 10 ਦਿੱਤੀਆਂ ਭਾਸ਼ਾਵਾਂ ਨੂੰ ਸਵੀਕਾਰ ਕਰਦਾ ਹੈ। ਗਾਹਕ ਦਾ ਨਾਮ, ਰਕਮ ਅਤੇ ਦਿਨਾਂ ਦੀ ਆਪਣੇ-ਆਪ ਪਛਾਣ ਫ਼ਿਲਹਾਲ ਹਿੰਦੀ ਉੱਤੇ ਕੇਂਦਰਿਤ ਹੈ; ਹੋਰ ਭਾਸ਼ਾਵਾਂ ਲਈ ਟ੍ਰਾਂਸਕ੍ਰਿਪਟ ਦੀ ਸਮੀਖਿਆ ਕਰੋ ਅਤੇ ਖੇਤਰ ਹੱਥੋਂ ਭਰੋ ਜਾਂ ਸੁਧਾਰੋ। ਯਾਦਦਿਹਾਨੀ ਸਾਰੀਆਂ 10 ਭਾਸ਼ਾਵਾਂ ਵਿੱਚ ਬਣਾਈ ਜਾ ਸਕਦੀ ਹੈ।",
         remindBtn: "ਯਾਦਦਿਹਾਨੀ ਆਡੀਓ ਬਣਾਓ",
         reminderMessageLabel: "ਯਾਦਦਿਹਾਨੀ ਸੁਨੇਹਾ",
         reminderAudioLabel: "ਯਾਦਦਿਹਾਨੀ ਆਡੀਓ",
@@ -729,10 +824,11 @@
 
     function t(key, params = {}) {
       const dictionary = translations[uiLanguage] || translations[DEFAULT_UI_LANGUAGE];
-      let text = dictionary[key];
+      let text = (localeExtras[uiLanguage] || {})[key] || dictionary[key];
 
       if (text === undefined) {
-        text = translations[DEFAULT_UI_LANGUAGE][key];
+        text = localeExtras[DEFAULT_UI_LANGUAGE]?.[key]
+          || translations[DEFAULT_UI_LANGUAGE][key];
       }
 
       if (text === undefined) {
@@ -761,6 +857,124 @@
     function setErrorStatus(element, error, fallbackKey) {
       const detail = (error && error.message) ? error.message : t(fallbackKey);
       setStatus(element, "errorDetail", "error", { detail });
+    }
+
+    function setAuthenticatedUi(session) {
+      authSession = session;
+      const loggedIn = Boolean(session);
+      const authPanel = document.getElementById("authPanel");
+      authPanel.classList.toggle("hidden", loggedIn);
+      document.getElementById("loginBtn").classList.toggle("hidden", loggedIn);
+      document.getElementById("signupBtn").classList.toggle("hidden", loggedIn);
+      document.getElementById("logoutBtn").classList.toggle("hidden", !loggedIn);
+      document.getElementById("dashboardPanel").classList.toggle("hidden", !loggedIn);
+      document.querySelectorAll("main > .card:not(#authPanel)").forEach(card => {
+        card.classList.toggle("hidden", !loggedIn);
+      });
+      const identity = document.getElementById("merchantIdentity");
+      identity.textContent = loggedIn
+        ? `${session.user?.email || ""} · ${t("accountActive")}`
+        : "";
+      identity.classList.toggle("hidden", !loggedIn);
+      setStatus(
+        document.getElementById("authStatus"),
+        loggedIn ? "authSignedIn" : "authRequired",
+        loggedIn ? "success" : ""
+      );
+      if (loggedIn) loadDashboard();
+    }
+
+    async function authenticate(action) {
+      if (!authClient) {
+        setErrorStatus(
+          document.getElementById("authStatus"),
+          new Error(
+            "Set Supabase URL and publishable key in frontend-config.local.js."
+          ),
+          "authFailed"
+        );
+        return;
+      }
+      const email = document.getElementById("authEmail").value.trim();
+      const password = document.getElementById("authPassword").value;
+      if (!email || !password) {
+        setErrorStatus(document.getElementById("authStatus"), new Error(t("authRequired")), "authFailed");
+        return;
+      }
+      const result = action === "signup"
+        ? await authClient.auth.signUp({ email, password })
+        : await authClient.auth.signInWithPassword({ email, password });
+      if (result.error) throw result.error;
+      setAuthenticatedUi(result.data.session);
+    }
+
+    async function loadDashboard() {
+      try {
+        const [summaryResponse, customersResponse] = await Promise.all([
+          fetch(`${API_BASE}/dashboard/summary`),
+          fetch(`${API_BASE}/customers/`)
+        ]);
+        if (!summaryResponse.ok || !customersResponse.ok) {
+          throw new Error(await readError(!summaryResponse.ok ? summaryResponse : customersResponse));
+        }
+        const summary = await summaryResponse.json();
+        const customers = await customersResponse.json();
+        document.getElementById("summaryOutstanding").textContent =
+          `₹${Number(summary.total_outstanding_credit || 0).toFixed(2)}`;
+        document.getElementById("summaryPayments").textContent =
+          `₹${Number(summary.total_payments_received || 0).toFixed(2)}`;
+        document.getElementById("summaryCustomers").textContent = summary.total_customers || 0;
+        document.getElementById("summaryPending").textContent =
+          summary.customers_with_pending_dues || 0;
+        dashboardCustomers = customers.customers || [];
+        renderCustomerDirectory();
+      } catch (error) {
+        setErrorStatus(document.getElementById("authStatus"), error, "authFailed");
+      }
+    }
+
+    function renderCustomerDirectory() {
+      const container = document.getElementById("customerDirectory");
+      const search = document.getElementById("dashboardSearch").value.trim().toLowerCase();
+      const pendingOnly = document.getElementById("dashboardPendingOnly").checked;
+      const rows = dashboardCustomers
+        .filter(customer => !pendingOnly || Number(customer.outstanding_balance) > 0)
+        .filter(customer =>
+          !search
+          || (customer.name || "").toLowerCase().includes(search)
+          || (customer.phone || "").toLowerCase().includes(search)
+        )
+        .sort((a, b) => Number(b.outstanding_balance || 0) - Number(a.outstanding_balance || 0));
+      if (!rows.length) {
+        container.textContent = t("emptyCustomers");
+        return;
+      }
+      const table = document.createElement("table");
+      table.className = "customer-table";
+      table.innerHTML = `<thead><tr><th>${t("customerName")}</th><th>${t("phone")}</th><th>${t("outstandingBalanceLabel")}</th><th></th></tr></thead>`;
+      const body = document.createElement("tbody");
+      rows.forEach(customer => {
+        const row = document.createElement("tr");
+        row.innerHTML = `<td></td><td></td><td class="positive"></td><td></td>`;
+        row.children[0].textContent = customer.name || "";
+        row.children[1].textContent = customer.phone || "—";
+        row.children[2].textContent = `₹${Number(customer.outstanding_balance || 0).toFixed(2)}`;
+        const view = document.createElement("button");
+        view.className = "secondary";
+        view.type = "button";
+        view.textContent = t("viewLedger");
+        view.addEventListener("click", async () => {
+          currentCustomerId = customer.customer_id || customer.id;
+          currentCustomerName = customer.name;
+          await loadTransactionHistory(currentCustomerId);
+          document.getElementById("customerName").value = customer.name || "";
+          document.getElementById("dashboardPanel").scrollIntoView({ behavior: "smooth" });
+        });
+        row.children[3].appendChild(view);
+        body.appendChild(row);
+      });
+      table.appendChild(body);
+      container.replaceChildren(table);
     }
 
     function renderLedgerCustomer() {
@@ -803,9 +1017,49 @@
           ? new Date(transaction.created_at).toLocaleString(dateLocale())
           : "";
 
-        item.textContent = `${kind}: ₹${Number(transaction.amount).toFixed(2)}${date ? " · " + date : ""}${transaction.note ? " · " + transaction.note : ""}`;
+        const details = document.createElement("span");
+        details.textContent = `${kind}: ₹${Number(transaction.amount).toFixed(2)}${date ? " · " + date : ""}${transaction.note ? " · " + transaction.note : ""}`;
+        const edit = document.createElement("button");
+        edit.className = "secondary";
+        edit.type = "button";
+        edit.textContent = t("editTransaction");
+        edit.addEventListener("click", () => editLedgerTransaction(transaction));
+        item.replaceChildren(details, document.createTextNode(" "), edit);
         list.appendChild(item);
       });
+    }
+
+    async function editLedgerTransaction(transaction) {
+      const amount = window.prompt(t("correctAmount"), transaction.amount);
+      if (amount === null || !Number.isFinite(Number(amount)) || Number(amount) <= 0) return;
+      const transactionType = window.prompt(
+        t("correctType"),
+        transaction.transaction_type
+      );
+      if (!["credit", "payment"].includes(transactionType)) return;
+      const note = window.prompt(t("noteLabel"), transaction.note || "");
+      const correctionSummary = `${transaction.transaction_type} ₹${Number(transaction.amount).toFixed(2)} → ${transactionType} ₹${Number(amount).toFixed(2)}`;
+      if (note === null || !window.confirm(`${t("confirmCorrection")}\n\n${correctionSummary}`)) return;
+      try {
+        const response = await fetch(
+          `${API_BASE}/transactions/${encodeURIComponent(transaction.id)}`,
+          {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              amount: Number(amount),
+              transaction_type: transactionType,
+              note
+            })
+          }
+        );
+        if (!response.ok) throw new Error(await readError(response));
+        await loadTransactionHistory(currentCustomerId);
+        await loadDashboard();
+        setStatus(document.getElementById("ledgerStatus"), "transactionUpdated", "success");
+      } catch (error) {
+        setErrorStatus(document.getElementById("ledgerStatus"), error, "errSaveTransaction");
+      }
     }
 
     function applyTranslations() {
@@ -896,10 +1150,41 @@
     let currentCustomerName = null;
     let currentCustomerCreated = null;
     let currentTransactions = [];
+    let currentCustomerSelection = null;
+
+    const nativeFetch = window.fetch.bind(window);
+    window.fetch = async (input, options = {}) => {
+      const headers = new Headers(options.headers || {});
+      if (authSession?.access_token) {
+        headers.set("Authorization", `Bearer ${authSession.access_token}`);
+      }
+      return nativeFetch(input, { ...options, headers });
+    };
 
     uiLanguageSelect.addEventListener("change", event => {
       updateUiLanguage(event.target.value);
     });
+
+    document.getElementById("loginBtn").addEventListener("click", async () => {
+      try {
+        await authenticate("login");
+      } catch (error) {
+        setErrorStatus(document.getElementById("authStatus"), error, "authFailed");
+      }
+    });
+    document.getElementById("signupBtn").addEventListener("click", async () => {
+      try {
+        await authenticate("signup");
+      } catch (error) {
+        setErrorStatus(document.getElementById("authStatus"), error, "authFailed");
+      }
+    });
+    document.getElementById("logoutBtn").addEventListener("click", async () => {
+      if (authClient) await authClient.auth.signOut();
+      setAuthenticatedUi(null);
+    });
+    document.getElementById("dashboardSearch").addEventListener("input", renderCustomerDirectory);
+    document.getElementById("dashboardPendingOnly").addEventListener("change", renderCustomerDirectory);
 
 
 
@@ -1076,6 +1361,7 @@
       document.getElementById("transcript").value = "";
 
       document.getElementById("customerName").value = "";
+      document.getElementById("customerPhone").value = "";
 
       document.getElementById("amount").value = "";
 
@@ -1085,6 +1371,8 @@
       currentCustomerId = null;
       currentCustomerName = null;
       currentCustomerCreated = null;
+      currentCustomerSelection = null;
+      document.getElementById("customerMatches").innerHTML = "";
       currentTransactions = [];
       document.getElementById("customerLedgerName").textContent = "";
       document.getElementById("historyList").innerHTML = "";
@@ -1162,6 +1450,7 @@
         document.querySelector(`input[name="transactionType"][value="${data.transaction_type}"]`).checked = true;
       }
 
+        await searchCustomersForConfirmation();
 
 
         const missing = Array.isArray(data.missing_fields) ? data.missing_fields : [];
@@ -1270,6 +1559,71 @@
 
     });
 
+    function newIdempotencyKey() {
+      if (window.crypto && typeof window.crypto.randomUUID === "function") {
+        return window.crypto.randomUUID();
+      }
+      return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    }
+
+    function renderCustomerMatches(customers) {
+      const container = document.getElementById("customerMatches");
+      container.innerHTML = "";
+
+      customers.forEach(customer => {
+        const row = document.createElement("div");
+        row.className = "customer-match";
+        const details = document.createElement("span");
+        const name = document.createElement("strong");
+        name.textContent = customer.name || "";
+        details.appendChild(name);
+        if (customer.phone) {
+          const phone = document.createElement("small");
+          phone.textContent = ` ${customer.phone}`;
+          details.appendChild(phone);
+        }
+        const button = document.createElement("button");
+        button.className = "secondary";
+        button.type = "button";
+        button.textContent = t("selectCustomer");
+        button.addEventListener("click", () => {
+          currentCustomerSelection = customer;
+          container.querySelectorAll("button").forEach(item => { item.disabled = false; });
+          button.disabled = true;
+          setStatus(document.getElementById("ledgerStatus"), "customerSelected", "success");
+        });
+        row.append(details, button);
+        container.appendChild(row);
+      });
+
+      const createButton = document.createElement("button");
+      createButton.className = "secondary";
+      createButton.type = "button";
+      createButton.textContent = customers.length
+        ? t("createCustomerInstead")
+        : t("createCustomer");
+      createButton.addEventListener("click", () => {
+        currentCustomerSelection = { createNew: true };
+        container.querySelectorAll("button").forEach(item => { item.disabled = false; });
+        createButton.disabled = true;
+        setStatus(document.getElementById("ledgerStatus"), "newCustomerSelected", "success");
+      });
+      container.appendChild(createButton);
+    }
+
+    async function searchCustomersForConfirmation() {
+      const name = document.getElementById("customerName").value.trim();
+      const phone = document.getElementById("customerPhone").value.trim();
+      currentCustomerSelection = null;
+      if (!name && !phone) return;
+
+      const query = new URLSearchParams({ name, phone });
+      const response = await fetch(`${API_BASE}/customers/search?${query}`);
+      if (!response.ok) throw new Error(await readError(response));
+      const data = await response.json();
+      renderCustomerMatches(Array.isArray(data.customers) ? data.customers : []);
+    }
+
 
 
 
@@ -1305,18 +1659,25 @@
       }
 
       saveLedgerBtn.disabled = true;
+      saveLedgerBtn.textContent = "Saving...";
       historyBtn.disabled = true;
       setStatus(document.getElementById("ledgerStatus"), "savingLedger", "live");
       try {
+        if (!currentCustomerSelection) {
+          throw new Error("Select an existing customer or choose to create a new customer.");
+        }
         const response = await fetch(`${API_BASE}/ledger/from-voice`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             name,
+            customer_id: currentCustomerSelection.createNew ? null : currentCustomerSelection.id,
+            phone: document.getElementById("customerPhone").value.trim() || null,
             amount,
             transaction_type: transactionType,
             preferred_language: preferredLanguage,
-            description
+            description,
+            idempotency_key: newIdempotencyKey()
           })
         });
         if (!response.ok) throw new Error(await readError(response));
@@ -1340,6 +1701,7 @@
         setErrorStatus(document.getElementById("ledgerStatus"), error, "errSaveTransaction");
       } finally {
         saveLedgerBtn.disabled = false;
+        saveLedgerBtn.textContent = t("saveLedgerBtn");
       }
     });
 
@@ -1443,7 +1805,47 @@
 
     });
 
-    initializeUiLanguage();
+    async function initializeApplication() {
+      try {
+        const localeEntries = await Promise.all(
+          SUPPORTED_UI_LANGUAGES.map(async language => [
+            language,
+            await (await nativeFetch(`locales/${language}.json`)).json()
+          ])
+        );
+        localeExtras = Object.fromEntries(localeEntries);
+      } catch {
+        localeExtras = {};
+      }
+      initializeUiLanguage();
+      if (!hasValidSupabaseConfig) {
+        setStatus(document.getElementById("authStatus"), "configMissing", "error");
+        document.getElementById("loginBtn").disabled = true;
+        document.getElementById("signupBtn").disabled = true;
+        document.body.classList.remove("initializing");
+        return;
+      }
+      if (authClient) {
+        try {
+          const sessionResult = await authClient.auth.getSession();
+          setAuthenticatedUi(sessionResult.data.session);
+          authClient.auth.onAuthStateChange((_event, session) => {
+            setAuthenticatedUi(session);
+          });
+        } catch (error) {
+          console.error("[Udhaar Voice] Could not restore Supabase session.", error);
+          setAuthenticatedUi(null);
+          setErrorStatus(document.getElementById("authStatus"), error, "authFailed");
+        } finally {
+          document.body.classList.remove("initializing");
+        }
+      } else {
+        setAuthenticatedUi(null);
+        document.body.classList.remove("initializing");
+      }
+    }
+
+    initializeApplication();
 
   </script>
 

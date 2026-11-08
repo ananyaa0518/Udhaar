@@ -113,7 +113,42 @@ SUPABASE_URL=your_supabase_url
 SUPABASE_SECRET_KEY=your_supabase_secret_key
 ```
 
+Enable Email auth in Supabase Dashboard → Authentication → Providers. The
+backend verifies every bearer access token with Supabase Auth; it never trusts a
+merchant ID from the browser. Customer, transaction, dashboard, and correction
+APIs require `Authorization: Bearer <access_token>`.
+
+Create the browser configuration file from the template:
+
+```bash
+cp frontend-config.js frontend-config.local.js
+```
+
+Set `UDHAAR_SUPABASE_URL` and `UDHAAR_SUPABASE_PUBLISHABLE_KEY` in
+`frontend-config.local.js`. The HTML loads the safe example first and then
+automatically overrides it with the local file when present. The
+publishable/anon key is intended for browser use; never put
+`SUPABASE_SECRET_KEY` in frontend files.
+
 Create the `customers` and `transactions` tables and the `customer_balances` view in Supabase using the database schema.
+
+For atomic transaction validation and duplicate prevention, run
+[`database/migrations/20261108_atomic_transactions.sql`](database/migrations/20261108_atomic_transactions.sql)
+in the Supabase SQL editor after the base tables exist. This adds the transaction
+idempotency key and the `record_transaction` RPC used by the API.
+
+Then run
+[`database/migrations/20261108_merchant_auth_rls.sql`](database/migrations/20261108_merchant_auth_rls.sql).
+It adds merchant ownership, RLS policies, audited correction support, and the
+merchant-aware transaction RPC. Existing rows remain unassigned (`merchant_id`
+is `NULL`) and are intentionally not visible to any new merchant. Assign demo
+rows manually only after identifying the correct Supabase Auth user.
+
+Migration order:
+
+1. Base `customers`, `transactions`, and balance view.
+2. `20261108_atomic_transactions.sql`.
+3. `20261108_merchant_auth_rls.sql`.
 
 Never commit your `.env` file or expose the Supabase secret key in frontend code.
 
@@ -148,6 +183,7 @@ Visit `http://localhost:5500/test_recorder.html` and allow microphone access.
 | POST | `/transactions/credit` | Record credit |
 | POST | `/transactions/payment` | Record payment |
 | GET | `/transactions/{customer_id}/history` | View transaction history |
+
 
 ## What's Next
 

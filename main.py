@@ -16,6 +16,7 @@ from routes.customers import router as customers_router
 from number_utils import HINDI_NUMBERS, ROMAN_NUMBERS, hindi_to_number
 from routes.transactions import router as transactions_router
 from routes.voice_ledger import router as voice_ledger_router
+from routes.dashboard import router as dashboard_router
 # ==================================================
 # CONFIGURATION
 # ==================================================
@@ -43,6 +44,7 @@ app = FastAPI(title="Udhaar Voice API")
 app.include_router(customers_router)
 app.include_router(transactions_router)
 app.include_router(voice_ledger_router)
+app.include_router(dashboard_router)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -947,3 +949,9 @@ def generate_reminder(request: RemindRequest):
             status_code=502,
             detail=f"Could not connect to Gnani TTS: {str(error)}"
         )
+@app.get("/config")
+def get_public_config():
+    return {
+        "supabase_url": os.getenv("SUPABASE_URL"),
+        "supabase_publishable_key": os.getenv("SUPABASE_PUBLISHABLE_KEY")
+    }

@@ -1,6 +1,7 @@
 
 # Environment variables and secrets
 .env
+frontend-config.local.js
 .env.*
 !.env.example
 
