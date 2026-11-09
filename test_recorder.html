@@ -39,13 +39,50 @@
 
       color: var(--ink);
 
-      font-family: Inter, "Noto Sans", "Noto Sans Devanagari", "Noto Sans Gurmukhi", "Nirmala UI", "Devanagari Sangam MN", "Gurmukhi MN", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.45;
 
+    }
+
+    html[lang="hi"] body {
+      font-family: "Noto Sans Devanagari", "Nirmala UI", "Devanagari Sangam MN", sans-serif;
+    }
+
+    html[lang="pa"] body {
+      font-family: "Noto Sans Gurmukhi", "Gurmukhi MN", sans-serif;
     }
 
     .page { width: 100%; max-width: 1160px; margin-inline: auto; }
 
     header { margin-bottom: 22px; padding: 18px 4px 4px; }
+
+    body.logged-out {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+    }
+
+    body.logged-out .app-content {
+      max-width: 720px;
+    }
+
+    body.logged-out header {
+      margin-bottom: 12px;
+      padding-top: 0;
+    }
+
+    body.logged-out .hero-copy {
+      min-width: 0;
+      flex: 1 1 320px;
+    }
+
+    body.logged-out .eyebrow {
+      display: none;
+    }
+
+    body.logged-out .auth-panel {
+      margin: 0 auto;
+    }
 
     .header-top {
       width: 100%;
@@ -79,6 +116,17 @@
       font-weight: 600;
     }
 
+    .account-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .account-actions .merchant-identity {
+      margin: 0;
+    }
+
     .eyebrow { color: var(--primary); font-size: 12px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
 
     h1 { margin: 8px 0 6px; font-size: clamp(30px, 5vw, 46px); letter-spacing: -.05em; }
@@ -94,7 +142,7 @@
 
     }
 
-    .step { display: flex; align-items: center; gap: 10px; margin: 0 0 16px; }
+    .step { display: flex; align-items: center; gap: 10px; min-width: 0; margin: 0 0 16px; }
 
     .step-number {
 
@@ -106,16 +154,16 @@
 
     }
 
-    h2 { margin: 0; font-size: 19px; letter-spacing: -.02em; }
+    h2 { min-width: 0; margin: 0; font-size: 19px; line-height: 1.35; letter-spacing: -.02em; }
 
     .hint { color: var(--muted); font-size: 13px; line-height: 1.5; margin: 8px 0 0; }
 
-    .controls { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+    .controls { display: flex; align-items: stretch; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
 
     button {
 
-      border: 0; border-radius: 11px; padding: 12px 17px; font-size: 14px;
-      font-weight: 700; cursor: pointer; transition: transform .15s ease, background .15s ease, box-shadow .15s ease;
+      min-height: 44px; border: 0; border-radius: 11px; padding: 10px 17px;
+      font: inherit; font-size: 14px; font-weight: 700; line-height: 1.25; cursor: pointer; transition: transform .15s ease, background .15s ease, box-shadow .15s ease;
 
     }
 
@@ -140,15 +188,15 @@
 
     .audio-preview { width: 100%; margin-top: 14px; }
 
-    label { display: block; font-size: 13px; font-weight: 700; margin: 14px 0 7px; }
+    label { display: block; min-height: 1.45em; font-size: 13px; font-weight: 700; line-height: 1.45; margin: 14px 0 7px; }
 
-    input, select, textarea { width: 100%; border: 1px solid #d8deea; border-radius: 10px; padding: 12px 13px; font: inherit; color: var(--ink); background: white; outline: none; transition: border-color .15s ease, box-shadow .15s ease; }
+    input, select, textarea { width: 100%; min-width: 0; border: 1px solid #d8deea; border-radius: 10px; padding: 12px 13px; font: inherit; line-height: 1.45; color: var(--ink); background: white; outline: none; transition: border-color .15s ease, box-shadow .15s ease; }
 
     input:focus, select:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(154,101,23,.16); }
 
     textarea { min-height: 88px; resize: vertical; }
 
-    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 14px; }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 14px; }
 
     .full { grid-column: 1 / -1; }
 
@@ -165,8 +213,8 @@
     .result strong { display: block; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
 
 
-    .transaction-type { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 8px; }
-    .transaction-type label { display: inline-flex; align-items: center; gap: 7px; margin: 0; font-weight: 600; }
+    .transaction-type { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; margin-top: 8px; }
+    .transaction-type label { display: inline-flex; align-items: center; min-height: 44px; gap: 7px; margin: 0; font-weight: 600; }
     .transaction-type input { width: auto; }
     .balance-card { margin-top: 14px; padding: 16px; border-radius: 12px; background: #e5f1e9; color: #245c43; }
     .balance-card .amount { font-size: 28px; font-weight: 800; margin-top: 4px; }
@@ -192,6 +240,9 @@
     }
     body:not(.initializing) .auth-loading { display: none; }
     .auth-panel { border: 2px solid var(--soft-blue); }
+    .auth-panel .grid { grid-template-columns: 1fr; }
+    .auth-panel { width: 100%; max-width: 540px; padding: 20px 24px; }
+    .auth-panel .auth-actions button { flex: 1 1 0; }
     .dashboard-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
     .summary-card { padding: 16px; border: 1px solid #e4d3b2; border-radius: 14px; background: linear-gradient(145deg, #fbf1df, #fffdf9); }
     .summary-card strong { display: block; color: var(--muted); font-size: 12px; }
@@ -200,10 +251,14 @@
     .customer-table th, .customer-table td { text-align: left; padding: 10px 7px; border-bottom: 1px solid var(--line); }
     .customer-table th { color: var(--muted); }
     .positive { color: var(--green); font-weight: 700; }
-    .auth-actions { display: flex; gap: 10px; align-items: end; flex-wrap: wrap; }
-    .auth-panel { max-width: 780px; margin-left: auto; margin-right: auto; }
+    .auth-actions { display: flex; gap: 10px; align-items: stretch; flex-wrap: wrap; }
+    .auth-panel { margin-left: auto; margin-right: auto; }
     .merchant-identity { margin: -4px 0 16px; color: var(--muted); font-size: 13px; }
     .requires-auth { animation: rise .2s ease-out; }
+    .reminder-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+    .reminder-actions { align-items: stretch; }
+    .reminder-actions button { flex: 1 1 150px; }
+    .controls button { min-width: 140px; }
     .customer-table { overflow: hidden; border: 1px solid var(--line); border-radius: 12px; }
     .customer-table th { background: #f8f0e3; }
     .customer-match { background: #fff; }
@@ -223,9 +278,12 @@
 
       .full { grid-column: auto; }
 
-      .controls button { flex: 1; }
+      .controls button { flex: 1 1 140px; }
 
       .ui-language { width: 100%; }
+      .account-actions { width: 100%; }
+      .account-actions .merchant-identity { flex: 1 1 100%; }
+      .transaction-type { align-items: flex-start; flex-direction: column; gap: 4px; }
       .dashboard-grid { grid-template-columns: repeat(2, 1fr); }
       .customer-table { display: block; overflow-x: auto; white-space: nowrap; }
       .history-list li { align-items: flex-start; flex-direction: column; }
@@ -260,14 +318,12 @@
 
           <h1 data-i18n="appTitle">Udhaar Voice</h1>
 
-          <p class="subtitle" data-i18n="subtitle">Record a customer's udhaar details in Hindi, review the extracted information, then create a payment reminder in the customer's preferred language.</p>
+          <p class="subtitle" data-i18n="subtitle">A simple voice-first khata for shopkeepers.</p>
 
         </div>
 
         <div class="ui-language">
-
           <label for="uiLanguage" data-i18n="interfaceLanguage">Interface language</label>
-
           <select id="uiLanguage" data-i18n-aria-label="interfaceLanguageAria">
 
             <option value="en">English</option>
@@ -275,17 +331,18 @@
             <option value="hi">हिंदी</option>
 
             <option value="pa">ਪੰਜਾਬੀ</option>
-
           </select>
-
         </div>
 
+        <div id="accountActions" class="account-actions hidden">
+          <div id="headerMerchantIdentity" class="merchant-identity"></div>
+          <button id="headerLogoutBtn" class="secondary" type="button" data-i18n="logout">Log out</button>
+        </div>
       </div>
 
     </header>
 
     <section id="authPanel" class="card auth-panel">
-      <div class="step"><span class="step-number">0</span><h2 data-i18n="dashboardAuthHeading">Merchant account</h2></div>
       <div id="merchantIdentity" class="merchant-identity hidden"></div>
       <div class="grid">
         <div><label for="authEmail" data-i18n="email">Email</label><input id="authEmail" type="email" autocomplete="email" /></div>
@@ -294,12 +351,12 @@
       <div class="auth-actions">
         <button id="loginBtn" class="primary" data-i18n="login">Log in</button>
         <button id="signupBtn" class="secondary" data-i18n="signup">Sign up</button>
-        <button id="logoutBtn" class="secondary hidden" data-i18n="logout">Log out</button>
       </div>
       <div id="authStatus" class="status" data-i18n="authRequired">Please log in to continue.</div>
     </section>
 
-    <section id="dashboardPanel" class="card requires-auth hidden">
+    <div id="authenticatedApp" class="hidden">
+    <section id="dashboardPanel" class="card requires-auth">
       <div class="step"><span class="step-number">1</span><h2 data-i18n="dashboard">Dashboard</h2></div>
       <div class="dashboard-grid">
         <div class="summary-card"><strong data-i18n="totalOutstanding">Total outstanding</strong><div id="summaryOutstanding" class="summary-value">₹0.00</div></div>
@@ -433,7 +490,7 @@
 
   
   <section class="card">
-    <div class="step"><span class="step-number">3</span><h2 data-i18n="saveHeading">Save transaction to Supabase ledger</h2></div>
+    <div class="step"><span class="step-number">3</span><h2 data-i18n="saveHeading">Save transaction</h2></div>
     <p class="hint" data-i18n="saveHint">Review the transaction type before saving. Credit increases the customer's outstanding balance; payment reduces it.</p>
     <label data-i18n="transactionTypeLabel">Transaction type</label>
     <div class="transaction-type">
@@ -443,7 +500,7 @@
     <label for="ledgerNote" data-i18n="noteLabel">Note (optional)</label>
     <input id="ledgerNote" type="text" maxlength="500" data-i18n-placeholder="notePlaceholder" placeholder="e.g. Voice recorded transaction" />
     <div class="controls">
-      <button id="saveLedgerBtn" class="primary" data-i18n="saveLedgerBtn">Save to Ledger</button>
+      <button id="saveLedgerBtn" class="primary" data-i18n="saveLedgerBtn">Save transaction</button>
       <button id="historyBtn" class="secondary" disabled data-i18n="historyBtn">Refresh history</button>
     </div>
     <div id="ledgerStatus" class="status" data-status-key="ledgerStatusInitial">Extract the customer name and amount, then save the transaction.</div>
@@ -501,9 +558,13 @@
         <strong data-i18n="reminderMessageLabel">REMINDER MESSAGE</strong>
 
         <div id="reminderText"></div>
-
         <audio id="reminderAudio" class="audio-preview" controls data-i18n-aria-label="reminderAudioLabel"></audio>
-
+        <div class="reminder-actions">
+          <button id="downloadAudioBtn" class="secondary" type="button" data-i18n="downloadAudio">Download Audio</button>
+          <button id="shareAudioBtn" class="secondary" type="button" data-i18n="shareAudio">Share Audio</button>
+          <button id="shareWhatsAppBtn" class="primary" type="button" data-i18n="shareWhatsApp">WhatsApp</button>
+        </div>
+        <div id="shareStatus" class="status hidden" aria-live="polite"></div>
       </div>
 
     </section>
@@ -511,6 +572,7 @@
 
 
     <p class="footer" data-i18n="footer">Udhaar Voice · Prototype · Review all extracted details before generating a reminder.</p>
+    </div>
 
   </main>
 
@@ -566,7 +628,7 @@
         checkingSession: "Checking your secure session…",
         eyebrow: "Voice-first digital khata",
         appTitle: "Udhaar Voice",
-        subtitle: "Record a customer's udhaar details in Hindi, review the extracted information, then create a payment reminder in the customer's preferred language.",
+        subtitle: "A simple voice-first khata for shopkeepers.",
         interfaceLanguage: "Interface language",
         interfaceLanguageAria: "Choose the interface language",
         recordHeading: "Record the merchant's voice",
@@ -588,14 +650,14 @@
         amountPlaceholder: "e.g. 450",
         daysPending: "Days pending",
         daysPlaceholder: "e.g. 5",
-        saveHeading: "Save transaction to Supabase ledger",
+        saveHeading: "Save transaction",
         saveHint: "Review the transaction type before saving. Credit increases the customer's outstanding balance; payment reduces it.",
         transactionTypeLabel: "Transaction type",
         creditOption: "Credit / उधार दिया",
         paymentOption: "Payment / पैसा वापस मिला",
         noteLabel: "Note (optional)",
         notePlaceholder: "e.g. Voice recorded transaction",
-        saveLedgerBtn: "Save to Ledger",
+        saveLedgerBtn: "Save transaction",
         historyBtn: "Refresh history",
         outstandingBalanceLabel: "UPDATED OUTSTANDING BALANCE",
         transactionHistoryLabel: "TRANSACTION HISTORY",
@@ -604,6 +666,14 @@
         remindBtn: "Generate reminder audio",
         reminderMessageLabel: "REMINDER MESSAGE",
         reminderAudioLabel: "Reminder audio",
+        downloadAudio: "Download Audio",
+        shareAudio: "Share Audio",
+        shareWhatsApp: "WhatsApp",
+        audioDownloadFailed: "Could not download the reminder audio.",
+        audioShareUnsupported: "Audio sharing is not supported here. Download the audio and attach it manually.",
+        audioShareFailed: "Could not share the reminder audio.",
+        whatsappOpened: "WhatsApp opened with the reminder text. The audio was not sent.",
+        whatsappMessage: "Customer: {name}\nOutstanding amount: ₹{amount}\n\n{text}",
         footer: "Udhaar Voice · Prototype · Review all extracted details before generating a reminder.",
         recordStatusIdle: "Microphone is idle.",
         extractStatusNone: "No details extracted yet.",
@@ -623,7 +693,7 @@
         transcriptionComplete: "Transcription complete{model}. Extracting details…",
         errTranscriptionFailed: "Transcription failed.",
         enterNameAmount: "Enter a customer name and a positive amount before saving.",
-        savingLedger: "Saving transaction to Supabase…",
+        savingLedger: "Saving transaction…",
         ledgerSaved: "{type} of ₹{amount} saved successfully.",
         errSaveTransaction: "Could not save transaction.",
         errLoadHistory: "Could not load history.",
@@ -652,7 +722,7 @@
         checkingSession: "आपका सुरक्षित सत्र जाँचा जा रहा है…",
         eyebrow: "आवाज़-आधारित डिजिटल खाता",
         appTitle: "उधार वॉइस",
-        subtitle: "ग्राहक के उधार की जानकारी हिंदी में रिकॉर्ड करें, निकाली गई जानकारी की समीक्षा करें, और ग्राहक की पसंदीदा भाषा में भुगतान अनुस्मारक बनाएँ।",
+        subtitle: "दुकानदारों के लिए आसान आवाज़ वाला डिजिटल खाता।",
         interfaceLanguage: "इंटरफ़ेस भाषा",
         interfaceLanguageAria: "इंटरफ़ेस भाषा चुनें",
         recordHeading: "दुकानदार की आवाज़ रिकॉर्ड करें",
@@ -674,14 +744,14 @@
         amountPlaceholder: "उदा. 450",
         daysPending: "कितने दिन से बकाया",
         daysPlaceholder: "उदा. 5",
-        saveHeading: "लेन-देन को Supabase खाते में सेव करें",
+        saveHeading: "लेन-देन सेव करें",
         saveHint: "सेव करने से पहले लेन-देन का प्रकार जाँचें। उधार ग्राहक का कुल बकाया बढ़ाता है; भुगतान उसे घटाता है।",
         transactionTypeLabel: "लेन-देन का प्रकार",
         creditOption: "उधार / दिया गया",
         paymentOption: "भुगतान / वापस मिला",
         noteLabel: "टिप्पणी (वैकल्पिक)",
         notePlaceholder: "उदा. आवाज़ से दर्ज किया गया लेन-देन",
-        saveLedgerBtn: "खाते में सेव करें",
+        saveLedgerBtn: "लेन-देन सेव करें",
         historyBtn: "इतिहास रीफ़्रेश करें",
         outstandingBalanceLabel: "अद्यतन कुल बकाया",
         transactionHistoryLabel: "लेन-देन का इतिहास",
@@ -690,6 +760,14 @@
         remindBtn: "अनुस्मारक ऑडियो बनाएँ",
         reminderMessageLabel: "अनुस्मारक संदेश",
         reminderAudioLabel: "अनुस्मारक ऑडियो",
+        downloadAudio: "ऑडियो डाउनलोड करें",
+        shareAudio: "ऑडियो साझा करें",
+        shareWhatsApp: "व्हाट्सऐप",
+        audioDownloadFailed: "अनुस्मारक ऑडियो डाउनलोड नहीं हो सका।",
+        audioShareUnsupported: "यहाँ ऑडियो साझा करना समर्थित नहीं है। ऑडियो डाउनलोड करके उसे मैन्युअली संलग्न करें।",
+        audioShareFailed: "अनुस्मारक ऑडियो साझा नहीं हो सका।",
+        whatsappOpened: "व्हाट्सऐप में अनुस्मारक संदेश खुल गया। ऑडियो नहीं भेजा गया।",
+        whatsappMessage: "ग्राहक: {name}\nबकाया राशि: ₹{amount}\n\n{text}",
         footer: "उधार वॉइस · प्रोटोटाइप · अनुस्मारक बनाने से पहले सभी निकाली गई जानकारी की समीक्षा करें।",
         recordStatusIdle: "माइक्रोफ़ोन निष्क्रिय है।",
         extractStatusNone: "अभी कोई जानकारी नहीं निकाली गई।",
@@ -707,7 +785,7 @@
         transcriptionComplete: "ट्रांसक्रिप्शन पूरा हुआ{model}। जानकारी निकाली जा रही है…",
         errTranscriptionFailed: "ट्रांसक्रिप्शन विफल रहा।",
         enterNameAmount: "सेव करने से पहले ग्राहक का नाम और सकारात्मक राशि भरें।",
-        savingLedger: "लेन-देन Supabase में सेव हो रहा है…",
+        savingLedger: "लेन-देन सेव हो रहा है…",
         ledgerSaved: "{type} ₹{amount} सफलतापूर्वक सेव हो गया।",
         errSaveTransaction: "लेन-देन सेव नहीं हो सका।",
         errLoadHistory: "इतिहास लोड नहीं हो सका।",
@@ -736,7 +814,7 @@
         checkingSession: "ਤੁਹਾਡਾ ਸੁਰੱਖਿਅਤ ਸੈਸ਼ਨ ਜਾਂਚਿਆ ਜਾ ਰਿਹਾ ਹੈ…",
         eyebrow: "ਆਵਾਜ਼-ਆਧਾਰਿਤ ਡਿਜੀਟਲ ਖਾਤਾ",
         appTitle: "ਉਧਾਰ ਵਾਇਸ",
-        subtitle: "ਗਾਹਕ ਦੀ ਉਧਾਰ ਜਾਣਕਾਰੀ ਪੰਜਾਬੀ ਵਿੱਚ ਰਿਕਾਰਡ ਕਰੋ, ਕੱਢੀ ਗਈ ਜਾਣਕਾਰੀ ਦੀ ਸਮੀਖਿਆ ਕਰੋ, ਅਤੇ ਗਾਹਕ ਦੀ ਪਸੰਦੀਦਾ ਭਾਸ਼ਾ ਵਿੱਚ ਭੁਗਤਾਨ ਯਾਦਦਿਹਾਨੀ ਬਣਾਓ।",
+        subtitle: "ਦੁਕਾਨਦਾਰਾਂ ਲਈ ਸੌਖਾ ਆਵਾਜ਼-ਆਧਾਰਿਤ ਡਿਜ਼ੀਟਲ ਖਾਤਾ।",
         interfaceLanguage: "ਇੰਟਰਫ਼ੇਸ ਭਾਸ਼ਾ",
         interfaceLanguageAria: "ਇੰਟਰਫ਼ੇਸ ਭਾਸ਼ਾ ਚੁਣੋ",
         recordHeading: "ਦੁਕਾਨਦਾਰ ਦੀ ਆਵਾਜ਼ ਰਿਕਾਰਡ ਕਰੋ",
@@ -758,14 +836,14 @@
         amountPlaceholder: "ਉਦਾ. 450",
         daysPending: "ਕਿੰਨੇ ਦਿਨਾਂ ਤੋਂ ਬਕਾਇਆ",
         daysPlaceholder: "ਉਦਾ. 5",
-        saveHeading: "ਲੈਣ-ਦੇਣ ਨੂੰ Supabase ਖਾਤੇ ਵਿੱਚ ਸੇਵ ਕਰੋ",
+        saveHeading: "ਲੈਣ-ਦੇਣ ਸੇਵ ਕਰੋ",
         saveHint: "ਸੇਵ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਲੈਣ-ਦੇਣ ਦੀ ਕਿਸਮ ਜਾਂਚੋ। ਉਧਾਰ ਗਾਹਕ ਦਾ ਕੁੱਲ ਬਕਾਇਆ ਵਧਾਉਂਦਾ ਹੈ; ਭੁਗਤਾਨ ਘਟਾਉਂਦਾ ਹੈ।",
         transactionTypeLabel: "ਲੈਣ-ਦੇਣ ਦੀ ਕਿਸਮ",
         creditOption: "ਉਧਾਰ / ਦਿੱਤਾ",
         paymentOption: "ਭੁਗਤਾਨ / ਵਾਪਸ ਮਿਲਿਆ",
         noteLabel: "ਟਿੱਪਣੀ (ਵੈਕਲਪਿਕ)",
         notePlaceholder: "ਉਦਾ. ਆਵਾਜ਼ ਨਾਲ ਦਰਜ ਲੈਣ-ਦੇਣ",
-        saveLedgerBtn: "ਖਾਤੇ ਵਿੱਚ ਸੇਵ ਕਰੋ",
+        saveLedgerBtn: "ਲੈਣ-ਦੇਣ ਸੇਵ ਕਰੋ",
         historyBtn: "ਇਤਿਹਾਸ ਰੀਫ਼੍ਰੈਸ਼ ਕਰੋ",
         outstandingBalanceLabel: "ਅੱਪਡੇਟ ਕੀਤਾ ਕੁੱਲ ਬਕਾਇਆ",
         transactionHistoryLabel: "ਲੈਣ-ਦੇਣ ਦਾ ਇਤਿਹਾਸ",
@@ -774,6 +852,14 @@
         remindBtn: "ਯਾਦਦਿਹਾਨੀ ਆਡੀਓ ਬਣਾਓ",
         reminderMessageLabel: "ਯਾਦਦਿਹਾਨੀ ਸੁਨੇਹਾ",
         reminderAudioLabel: "ਯਾਦਦਿਹਾਨੀ ਆਡੀਓ",
+        downloadAudio: "ਆਡੀਓ ਡਾਊਨਲੋਡ ਕਰੋ",
+        shareAudio: "ਆਡੀਓ ਸਾਂਝੀ ਕਰੋ",
+        shareWhatsApp: "ਵਟਸਐਪ",
+        audioDownloadFailed: "ਯਾਦਦਿਹਾਨੀ ਆਡੀਓ ਡਾਊਨਲੋਡ ਨਹੀਂ ਹੋ ਸਕੀ।",
+        audioShareUnsupported: "ਇੱਥੇ ਆਡੀਓ ਸਾਂਝੀ ਕਰਨਾ ਸਮਰਥਿਤ ਨਹੀਂ ਹੈ। ਆਡੀਓ ਡਾਊਨਲੋਡ ਕਰਕੇ ਇਸਨੂੰ ਹੱਥੋਂ ਜੋੜੋ।",
+        audioShareFailed: "ਯਾਦਦਿਹਾਨੀ ਆਡੀਓ ਸਾਂਝੀ ਨਹੀਂ ਹੋ ਸਕੀ।",
+        whatsappOpened: "ਵਟਸਐਪ ਵਿੱਚ ਯਾਦਦਿਹਾਨੀ ਸੁਨੇਹਾ ਖੁੱਲ੍ਹ ਗਿਆ। ਆਡੀਓ ਨਹੀਂ ਭੇਜੀ ਗਈ।",
+        whatsappMessage: "ਗਾਹਕ: {name}\nਬਕਾਇਆ ਰਕਮ: ₹{amount}\n\n{text}",
         footer: "ਉਧਾਰ ਵਾਇਸ · ਪ੍ਰੋਟੋਟਾਈਪ · ਯਾਦਦਿਹਾਨੀ ਬਣਾਉਣ ਤੋਂ ਪਹਿਲਾਂ ਸਾਰੀ ਕੱਢੀ ਗਈ ਜਾਣਕਾਰੀ ਦੀ ਸਮੀਖਿਆ ਕਰੋ।",
         recordStatusIdle: "ਮਾਈਕ੍ਰੋਫ਼ੋਨ ਨਿਸ਼ਕਿਰਿਆ ਹੈ।",
         extractStatusNone: "ਹਾਲੇ ਕੋਈ ਜਾਣਕਾਰੀ ਨਹੀਂ ਕੱਢੀ ਗਈ।",
@@ -791,7 +877,7 @@
         transcriptionComplete: "ਟ੍ਰਾਂਸਕ੍ਰਿਪਸ਼ਨ ਪੂਰਾ ਹੋਇਆ{model}। ਜਾਣਕਾਰੀ ਕੱਢੀ ਜਾ ਰਹੀ ਹੈ…",
         errTranscriptionFailed: "ਟ੍ਰਾਂਸਕ੍ਰਿਪਸ਼ਨ ਅਸਫਲ ਰਿਹਾ।",
         enterNameAmount: "ਸੇਵ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਗਾਹਕ ਦਾ ਨਾਮ ਅਤੇ ਸਕਾਰਾਤਮਕ ਰਕਮ ਭਰੋ।",
-        savingLedger: "ਲੈਣ-ਦੇਣ Supabase ਵਿੱਚ ਸੇਵ ਹੋ ਰਿਹਾ ਹੈ…",
+        savingLedger: "ਲੈਣ-ਦੇਣ ਸੇਵ ਹੋ ਰਿਹਾ ਹੈ…",
         ledgerSaved: "{type} ₹{amount} ਸਫਲਤਾਪੂਰਵਕ ਸੇਵ ਹੋ ਗਿਆ।",
         errSaveTransaction: "ਲੈਣ-ਦੇਣ ਸੇਵ ਨਹੀਂ ਹੋ ਸਕਿਆ।",
         errLoadHistory: "ਇਤਿਹਾਸ ਲੋਡ ਨਹੀਂ ਹੋ ਸਕਿਆ।",
@@ -862,20 +948,30 @@
     function setAuthenticatedUi(session) {
       authSession = session;
       const loggedIn = Boolean(session);
+      document.body.classList.toggle("logged-out", !loggedIn);
+      document.body.classList.toggle("authenticated", loggedIn);
       const authPanel = document.getElementById("authPanel");
       authPanel.classList.toggle("hidden", loggedIn);
+      authPanel.hidden = loggedIn;
+      authPanel.setAttribute("aria-hidden", String(loggedIn));
       document.getElementById("loginBtn").classList.toggle("hidden", loggedIn);
       document.getElementById("signupBtn").classList.toggle("hidden", loggedIn);
-      document.getElementById("logoutBtn").classList.toggle("hidden", !loggedIn);
-      document.getElementById("dashboardPanel").classList.toggle("hidden", !loggedIn);
-      document.querySelectorAll("main > .card:not(#authPanel)").forEach(card => {
-        card.classList.toggle("hidden", !loggedIn);
-      });
-      const identity = document.getElementById("merchantIdentity");
+      document.getElementById("accountActions").classList.toggle("hidden", !loggedIn);
+      const authenticatedApp = document.getElementById("authenticatedApp");
+      authenticatedApp.classList.toggle("hidden", !loggedIn);
+      authenticatedApp.hidden = !loggedIn;
+      authenticatedApp.setAttribute("aria-hidden", String(!loggedIn));
+      const identity = document.getElementById("headerMerchantIdentity");
       identity.textContent = loggedIn
         ? `${session.user?.email || ""} · ${t("accountActive")}`
         : "";
-      identity.classList.toggle("hidden", !loggedIn);
+      if (!loggedIn) {
+        currentCustomerId = null;
+        currentCustomerName = null;
+        currentCustomerSelection = null;
+        currentTransactions = [];
+        document.getElementById("reminderResult").classList.add("hidden");
+      }
       setStatus(
         document.getElementById("authStatus"),
         loggedIn ? "authSignedIn" : "authRequired",
@@ -889,7 +985,7 @@
         setErrorStatus(
           document.getElementById("authStatus"),
           new Error(
-            "Set Supabase URL and publishable key in frontend-config.local.js."
+          t("configMissing")
           ),
           "authFailed"
         );
@@ -968,6 +1064,7 @@
           currentCustomerName = customer.name;
           await loadTransactionHistory(currentCustomerId);
           document.getElementById("customerName").value = customer.name || "";
+          document.getElementById("customerPhone").value = customer.phone || "";
           document.getElementById("dashboardPanel").scrollIntoView({ behavior: "smooth" });
         });
         row.children[3].appendChild(view);
@@ -1151,6 +1248,7 @@
     let currentCustomerCreated = null;
     let currentTransactions = [];
     let currentCustomerSelection = null;
+    let currentReminder = null;
 
     const nativeFetch = window.fetch.bind(window);
     window.fetch = async (input, options = {}) => {
@@ -1179,9 +1277,16 @@
         setErrorStatus(document.getElementById("authStatus"), error, "authFailed");
       }
     });
-    document.getElementById("logoutBtn").addEventListener("click", async () => {
-      if (authClient) await authClient.auth.signOut();
-      setAuthenticatedUi(null);
+    document.getElementById("headerLogoutBtn").addEventListener("click", async () => {
+      if (!authClient) return;
+      try {
+        const { error } = await authClient.auth.signOut();
+        if (error) throw error;
+        setAuthenticatedUi(null);
+        setStatus(document.getElementById("authStatus"), "loggedOut", "success");
+      } catch (error) {
+        setErrorStatus(document.getElementById("authStatus"), error, "authFailed");
+      }
     });
     document.getElementById("dashboardSearch").addEventListener("input", renderCustomerDirectory);
     document.getElementById("dashboardPendingOnly").addEventListener("change", renderCustomerDirectory);
@@ -1221,8 +1326,80 @@
         return t("requestFailedHttp", { status: response.status });
 
       }
-
     }
+
+    function reminderFilename() {
+        const name = (currentReminder?.name || "customer")
+          .replace(/[^\p{L}\p{N}_-]+/gu, "_")
+          .replace(/^_+|_+$/g, "") || "customer";
+        return `${name}_reminder_${currentReminder?.language || "audio"}.mp3`;
+      }
+
+    async function getReminderAudioBlob() {
+        if (!currentReminder?.audioUrl) throw new Error(t("audioDownloadFailed"));
+        const response = await fetch(currentReminder.audioUrl);
+        if (!response.ok) throw new Error(await readError(response));
+        return response.blob();
+      }
+
+    function showShareStatus(key, type = "") {
+        const status = document.getElementById("shareStatus");
+        status.classList.remove("hidden");
+        setStatus(status, key, type);
+      }
+
+    document.getElementById("downloadAudioBtn").addEventListener("click", async () => {
+        try {
+          const blob = await getReminderAudioBlob();
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.href = url;
+          link.download = reminderFilename();
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+          window.setTimeout(() => URL.revokeObjectURL(url), 0);
+        } catch (error) {
+          showShareStatus("audioDownloadFailed", "error");
+          console.error("[Udhaar Voice] Could not download reminder audio.", error);
+        }
+      });
+
+    document.getElementById("shareAudioBtn").addEventListener("click", async () => {
+        try {
+          const blob = await getReminderAudioBlob();
+          const file = new File([blob], reminderFilename(), {
+            type: blob.type || "audio/mpeg"
+          });
+          if (!navigator.share || !navigator.canShare || !navigator.canShare({ files: [file] })) {
+            showShareStatus("audioShareUnsupported", "error");
+            return;
+          }
+          await navigator.share({
+            files: [file],
+            title: t("shareAudio"),
+            text: currentReminder.text
+          });
+        } catch (error) {
+          if (error?.name === "AbortError") return;
+          showShareStatus("audioShareFailed", "error");
+          console.error("[Udhaar Voice] Could not share reminder audio.", error);
+        }
+      });
+
+    document.getElementById("shareWhatsAppBtn").addEventListener("click", () => {
+        if (!currentReminder) return;
+        const phone = (document.getElementById("customerPhone").value || "")
+          .replace(/\D/g, "");
+        const message = t("whatsappMessage", {
+          name: currentReminder.name,
+          amount: currentReminder.amount,
+          text: currentReminder.text
+        });
+        const recipient = phone ? `/${phone}` : "/";
+        window.open(`https://wa.me${recipient}?text=${encodeURIComponent(message)}`, "_blank", "noopener");
+        showShareStatus("whatsappOpened", "success");
+    });
 
 
 
@@ -1382,6 +1559,8 @@
       setStatus(document.getElementById("ledgerStatus"), "ledgerStatusInitial");
 
       document.getElementById("reminderResult").classList.add("hidden");
+      document.getElementById("shareStatus").classList.add("hidden");
+      currentReminder = null;
 
       document.getElementById("reminderAudio").pause();
 
@@ -1659,7 +1838,7 @@
       }
 
       saveLedgerBtn.disabled = true;
-      saveLedgerBtn.textContent = "Saving...";
+      saveLedgerBtn.textContent = t("savingLedger");
       historyBtn.disabled = true;
       setStatus(document.getElementById("ledgerStatus"), "savingLedger", "live");
       try {
@@ -1766,22 +1945,29 @@
         const data = await response.json();
 
         if (!data.success) throw new Error(t("errReminderFailed"));
+        if (!data.audio_url || typeof data.audio_url !== "string") {
+          throw new Error(t("errReminderFailed"));
+        }
 
-
-
-        document.getElementById("reminderText").textContent = data.reminder_text || "";
-
+        const reminderText = data.reminder_text || "";
         const audio = document.getElementById("reminderAudio");
-
         const audioUrl = data.audio_url.startsWith("http")
 
           ? data.audio_url
 
           : `${API_BASE}${data.audio_url}`;
+        currentReminder = {
+          name,
+          amount,
+          language,
+          text: reminderText,
+          audioUrl
+        };
+        document.getElementById("reminderText").textContent = reminderText;
 
         audio.src = audioUrl;
-
         document.getElementById("reminderResult").classList.remove("hidden");
+        document.getElementById("shareStatus").classList.add("hidden");
 
 
 
@@ -1819,6 +2005,7 @@
       }
       initializeUiLanguage();
       if (!hasValidSupabaseConfig) {
+        setAuthenticatedUi(null);
         setStatus(document.getElementById("authStatus"), "configMissing", "error");
         document.getElementById("loginBtn").disabled = true;
         document.getElementById("signupBtn").disabled = true;
